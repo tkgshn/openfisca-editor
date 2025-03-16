@@ -1,16 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Plus, FileCode, Settings, Check } from "lucide-react"
+import { Search, Plus, FileCode, Settings, Check, FileText } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-import { SettingsDialog } from "@/components/settings-dialog"
+import { SettingsDialog } from "@/components/dialogs/settings-dialog"
 import type { Institution } from "@/lib/types"
 import { createInstitution } from "@/lib/api"
 import { useI18n } from "@/lib/i18n"
+import Link from "next/link"
 
 interface SidebarProps {
   institutions: Institution[]
@@ -156,6 +157,16 @@ export function Sidebar({
         <Button variant="outline" className="w-full justify-start" size="sm" onClick={() => setIsSettingsOpen(true)}>
           <Settings className="h-4 w-4 mr-2" />
           {t.common.settings}
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          asChild
+          title="ドキュメント"
+        >
+          <Link href="/docs" target="_blank" rel="noopener noreferrer">
+            <FileText className="h-4 w-4" />
+          </Link>
         </Button>
       </div>
 
