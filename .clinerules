@@ -1,0 +1,158 @@
+
+# OpenFisca Editor のための Cline ルール
+
+このファイルは、OpenFisca Editor プロジェクトにおける重要なパターン、プロジェクト構造、ベストプラクティスなどをClineに理解させるためのものです。
+
+## プロジェクトの概要
+
+OpenFisca Editor は、社会保障制度のシミュレーションと可視化を行うためのウェブアプリケーションです。ユーザーは制度の定義、パラメータの設定、テストケースの作成、シミュレーションの実行などを行うことができます。
+
+## 技術スタック
+
+- **フロントエンド**: Next.js（React）、TypeScript
+- **スタイリング**: Tailwind CSS、shadcn/ui コンポーネント
+- **状態管理**: React Context API
+- **データ保存**: ローカルストレージ（クライアントサイド）
+- **バックエンド接続**: OpenFisca API（オプション）
+
+## コンポーネント構成のルール
+
+1. **コンポーネントの分類**:
+   - `ui`: 汎用的なコンポーネント
+   - `editor`: コードエディタ関連のコンポーネント
+   - `institution`: 制度関連のコンポーネント
+   - `test`: テスト関連のコンポーネント
+   - `visualization`: 可視化関連のコンポーネント
+   - `simulation`: シミュレーション関連のコンポーネント
+   - `layout`: レイアウト関連のコンポーネント
+   - `shared`: 共有コンポーネント
+
+2. **命名規則**:
+   - コンポーネントファイル: PascalCase
+   - ユーティリティ関数: camelCase
+   - 定数: SNAKE_CASE
+   - TypeScript の型: PascalCase
+
+3. **インポート順序**:
+   - React/Next.js の組み込みモジュール
+   - サードパーティライブラリ
+   - プロジェクト内のコンポーネント
+   - プロジェクト内のユーティリティ関数
+   - プロジェクト内の型定義
+
+## データフロー
+
+1. **制度データの流れ**:
+   - ユーザーが制度を選択/作成 → 制度データがコンポーネントに流れる → 各パネル（コードエディタ、テストケース、パラメータなど）が更新される
+
+2. **更新の流れ**:
+   - ユーザーが編集 → handleInstitutionUpdate関数を通じて制度データが更新される → 更新されたデータがローカルストレージに保存される
+
+3. **テスト実行の流れ**:
+   - ユーザーがテスト実行 → TestContextを通じてテスト実行状態が管理される → テスト結果が表示される
+
+## コンポーネントの責務
+
+1. **OpenFiscaEditor**: アプリケーションのメインコンポーネント。制度の管理と表示を担当。
+
+2. **InstitutionDetails**: 選択された制度の詳細情報を表示・編集するコンポーネント。
+
+3. **TestCasePanel**: 制度のテストケースを管理するコンポーネント。
+
+4. **CodeEditorPanel**: OpenFisca のコードを編集するコンポーネント。
+
+5. **ParameterPanel**: 制度のパラメータを管理するコンポーネント。
+
+6. **SimulationPanel**: シミュレーションを実行し、結果を表示するコンポーネント。
+
+7. **MermaidPanel**: 制度のフローチャートを表示するコンポーネント。
+
+## 開発時の注意点
+
+1. **制度データの更新**:
+   - 制度データを更新する際は必ず handleInstitutionUpdate 関数を使用する
+   - サンプル制度（source: "sample"）は更新できない
+
+2. **テスト実行**:
+   - バックエンドが利用できない場合はモックデータが返される
+   - サンプル制度のテストは常に成功する
+
+3. **ローカライズ**:
+   - 現在は日本語のみ対応
+   - 将来的に多言語対応を予定
+
+4. **パフォーマンス**:
+   - 大量のデータを扱う場合はメモ化を活用する
+   - 不要な再レンダリングを避けるため、状態を適切に管理する
+
+5. **アクセシビリティ**:
+   - すべてのインタラクティブな要素にはキーボードアクセスを提供する
+   - 適切なARIA属性を使用する
+
+## よく使用されるパターン
+
+1. **制度の選択と表示**:
+   ```typescript
+   const handleInstitutionSelect = (index: number) => {
+     setSelectedInstitutionIndex(index);
+     setSelectedInstitution(institutions[index]);
+   };
+   ```
+
+2. **制度の更新**:
+   ```typescript
+   const handleInstitutionUpdate = async (updatedInstitution: Institution) => {
+     const updatedInstitutions = institutions.map((institution) =>
+       institution.id === updatedInstitution.id ? updatedInstitution : institution,
+     );
+     setInstitutions(updatedInstitutions);
+     setSelectedInstitution(updatedInstitution);
+   };
+   ```
+
+3. **テストの実行**:
+   ```typescript
+   const runTests = async (institutionId: string) => {
+     setIsLoading(true);
+     try {
+       const results = await runTest(institutionId);
+       setTestResults(results);
+     } catch (err) {
+       setError(`Failed to run tests: ${err}`);
+     } finally {
+       setIsLoading(false);
+     }
+   };
+   ```
+
+## OpenFisca のルール
+
+1. **変数名の制約**:
+   - 数字始まりのクラス名は使用できない（漢数字を使用する）
+   - 日本語は使用可能だが、クラス名としての制約を守る必要がある
+
+2. **エンティティと期間**:
+   - エンティティは 世帯、人物 などがある
+   - 期間は DAY, MONTH, YEAR, ETERNITY がある
+
+3. **テストケースの書き方**:
+   - テストケースは YAML 形式で記述
+   - 入力と期待される出力を定義する
+
+## プロジェクトの今後の方向性
+
+1. **コンポーネントの整理**:
+   - 重複コンポーネントの統合
+   - 責務の明確化
+
+2. **バックエンド連携の強化**:
+   - OpenFisca API との連携強化
+   - データの永続化
+
+3. **UI/UX の改善**:
+   - より直感的なインターフェース
+   - ビジュアライゼーションの強化
+
+4. **テスト機能の強化**:
+   - より詳細なテスト結果
+   - バッチテスト

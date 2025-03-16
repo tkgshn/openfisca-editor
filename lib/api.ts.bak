@@ -1,0 +1,43 @@
+const API_BASE_URL = "http://localhost:8000"
+
+export async function runSimulation(institutionId: string, params: any): Promise<any> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/simulate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ institutionId, params }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Failed to run simulation:", error)
+    throw error
+  }
+}
+
+export async function fetchInstitutionById(id: string): Promise<any> {
+  // Mock implementation - replace with actual API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const mockInstitution = {
+        id: id,
+        name: "Mock Institution",
+        description: "This is a mock institution for testing purposes.",
+        stats: {
+          variables: 10,
+          parameters: 5,
+          tests: 3,
+        },
+      }
+      resolve(mockInstitution)
+    }, 500)
+  })
+}
+

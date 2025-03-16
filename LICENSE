@@ -1,0 +1,54 @@
+# Server Side Public License (SSPL) v1.0
+
+This software is licensed under the Server Side Public License v1.0 (SSPL).
+For the full license text, please visit: https://www.mongodb.com/licensing/server-side-public-license
+
+## Why we chose SSPL - Our Commitment to Digital Public Infrastructure
+
+[English]
+
+Our choice of the Server Side Public License (SSPL) reflects our commitment to creating sustainable digital public infrastructure while protecting against potential exploitation of public resources. Here's why:
+
+1. **Protection of Digital Public Infrastructure**
+   - This software is designed to serve as critical public infrastructure for social security simulation
+   - We need to ensure that improvements and modifications benefit the entire community
+   - SSPL helps maintain the software's public nature while preventing commercial exploitation
+
+2. **Preventing Free-riding in Cloud Services**
+   - Modern software deployment often happens through cloud services
+   - Traditional open source licenses may not adequately address cloud service providers who benefit from the software without contributing back
+   - SSPL ensures that if you offer this software as a service, you must share your improvements
+
+3. **Sustainable Development**
+   - Development of public infrastructure requires sustainable funding and community support
+   - SSPL helps create a balanced ecosystem where commercial users must contribute back
+   - This approach ensures long-term maintenance and improvement of the software
+
+4. **Community-First Approach**
+   - While protecting against commercial exploitation, SSPL maintains the spirit of open source
+   - All users can still access, study, and modify the code
+   - The requirement to share modifications promotes collaborative improvement
+
+[日本語]
+
+サーバーサイド・パブリック・ライセンス（SSPL）を選択した理由は、持続可能なデジタル公共インフラの創造と、公共資源の搾取に対する保護を両立させるためです。
+
+1. **デジタル公共インフラの保護**
+   - このソフトウェアは社会保障シミュレーションのための重要な公共インフラとして設計されています
+   - 改良や修正が必ずコミュニティ全体の利益となるようにする必要があります
+   - SSPLは、ソフトウェアの公共性を維持しながら、商業的な搾取を防ぐことができます
+
+2. **クラウドサービスにおけるフリーライドの防止**
+   - 現代のソフトウェア展開は、主にクラウドサービスを通じて行われます
+   - 従来のオープンソースライセンスでは、貢献なしに利益を得るクラウドサービスプロバイダーに対して十分な対応ができません
+   - SSPLは、このソフトウェアをサービスとして提供する場合、その改良点を共有することを要求します
+
+3. **持続可能な開発**
+   - 公共インフラの開発には、持続可能な資金調達とコミュニティサポートが必要です
+   - SSPLは、商業利用者が必ずコミュニティに還元する仕組みを作ります
+   - これにより、ソフトウェアの長期的な保守と改善が確保されます
+
+4. **コミュニティ優先のアプローチ**
+   - 商業的な搾取から保護しながら、オープンソースの精神は維持します
+   - すべてのユーザーがコードにアクセス、学習、修正できます
+   - 修正の共有要件により、協調的な改善が促進されます
