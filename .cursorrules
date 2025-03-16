@@ -1,0 +1,148 @@
+# OpenFisca Editor のための Cursor ルール
+
+このファイルは、OpenFisca Editor プロジェクトにおけるUIコンポーネントの一貫性、デザインパターン、レイアウトルールなどを定義するものです。
+
+## カードコンポーネントのルール
+
+1. **基本レイアウト**:
+   ```tsx
+   <Card className="shadow-sm hover:shadow transition-shadow duration-200">
+     <CardHeader className="flex flex-row items-center justify-between pb-2">
+       <CardTitle className="flex items-center gap-2">
+         <Icon className="h-5 w-5" />
+         タイトル
+       </CardTitle>
+       <ActionButtons />
+     </CardHeader>
+     <CardContent>
+       {/* コンテンツ */}
+     </CardContent>
+   </Card>
+   ```
+
+2. **アクションボタンの配置**:
+   - プライマリアクションは常にカードヘッダーの右側に配置
+   - 複数のアクションがある場合は水平に並べる
+   - ボタンサイズは `size="sm"` を使用
+
+3. **アイコンの使用**:
+   - タイトル横のアイコンサイズ: h-5 w-5
+   - ボタン内のアイコンサイズ: h-4 w-4
+   - アイコンとテキストの間隔: gap-2
+
+## スペーシングとマージン
+
+1. **カード内部**:
+   - ヘッダーの下部パディング: pb-2
+   - コンテンツ間の間隔: space-y-4
+   - グリッドギャップ: gap-4
+
+2. **フォーム要素**:
+   - ラベルとインプット間: space-y-2
+   - フォームグループ間: space-y-4
+   - 2カラムレイアウト: grid grid-cols-1 md:grid-cols-2 gap-4
+
+## アニメーションとトランジション
+
+1. **ホバーエフェクト**:
+   ```tsx
+   className="hover:shadow transition-shadow duration-200"
+   ```
+
+2. **スライドアニメーション**:
+   ```tsx
+   className="animate-slide-in"
+   ```
+
+## レスポンシブデザイン
+
+1. **ブレークポイント**:
+   - モバイル: デフォルト（1カラム）
+   - タブレット: md (768px)
+   - デスクトップ: lg (1024px)
+
+2. **グリッドレイアウト**:
+   ```tsx
+   className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+   ```
+
+## フォームコントロール
+
+1. **入力フィールド**:
+   - ラベルは必須
+   - エラー状態の表示
+   - ヘルプテキストは text-xs text-muted-foreground
+
+2. **ボタン**:
+   - プライマリーアクション: デフォルトスタイル
+   - セカンダリーアクション: variant="outline"
+   - アイコンボタン: size="icon"
+
+## タブナビゲーション
+
+1. **タブの構造**:
+   ```tsx
+   <Tabs defaultValue="tab1" className="w-full">
+     <TabsList className="mb-4">
+       <TabsTrigger value="tab1" className="flex items-center gap-1">
+         <Icon className="h-4 w-4" />
+         <span>タブ1</span>
+       </TabsTrigger>
+     </TabsList>
+     <TabsContent value="tab1" className="space-y-4 animate-slide-in">
+       {/* コンテンツ */}
+     </TabsContent>
+   </Tabs>
+   ```
+
+## シミュレーションパネル
+
+1. **パラメータ表示**:
+   - スライダーと数値を横に配置
+   - 単位表示は font-mono を使用
+   - ヘルプテキストは下部に配置
+
+2. **結果表示**:
+   - 3カラムグリッドでメトリクスを表示
+   - グラフは固定高さ（h-[400px]）
+   - ローディング状態の表示
+
+## アクセシビリティ
+
+1. **フォーカス管理**:
+   - すべてのインタラクティブ要素にフォーカスインジケータ
+   - キーボードナビゲーション対応
+
+2. **ARIA属性**:
+   - 適切なラベリング
+   - 状態の通知
+   - エラーメッセージの関連付け
+
+## エラー処理
+
+1. **表示方法**:
+   - インライン表示
+   - エラーメッセージは赤色で表示
+   - ユーザーフレンドリーなメッセージ
+
+## ローディング状態
+
+1. **表示方法**:
+   - スケルトンローディング
+   - スピナー
+   - 操作不可の表示
+
+## カラーパレット
+
+1. **基本カラー**:
+   - プライマリ: Tailwindのデフォルト
+   - アクセント: 制度に応じて
+   - エラー: red-600
+   - 成功: green-600
+
+## アイコン
+
+1. **使用ルール**:
+   - Lucide アイコンを使用
+   - サイズの統一
+   - 意味のある使用

@@ -1,6 +1,6 @@
 import type React from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { useTestContext } from "@/contexts/TestContext"
+import { useTest } from "@/contexts/test-context"
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react"
 
 interface TestRunnerPanelProps {
@@ -14,7 +14,12 @@ interface TestRunnerPanelProps {
  * @returns {JSX.Element} Test runner panel component
  */
 const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
-  const { testResults, isLoading, error, testStatus } = useTestContext()
+  const { results: testResults, isRunning: isLoading, error } = useTest()
+  const testStatus = {
+    total: testResults?.length || 0,
+    passed: testResults?.filter((test: any) => test.passed)?.length || 0,
+    isSuccess: testResults?.length > 0 && testResults?.every((test: any) => test.passed)
+  }
 
   return (
     <div className="space-y-4">
@@ -46,7 +51,7 @@ const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
             )}
           </div>
 
-          {testResults.map((result, index) => (
+          {testResults.map((result: any, index: number) => (
             <Card
               key={index}
               className={`${result.passed ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
@@ -85,4 +90,3 @@ const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
 }
 
 export default TestRunnerPanel
-

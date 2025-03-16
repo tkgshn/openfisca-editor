@@ -71,7 +71,7 @@ export const en = {
     edit: "Edit Parameter",
     create: "Create Parameter",
     name: "Parameter Name",
-    description: "Description",
+    paramDescription: "Description",
     referenceUrl: "Reference URL",
     unit: "Unit",
     value: "Value",
@@ -142,4 +142,3 @@ export const en = {
     deleteAccountDescription: "This action cannot be undone. Your account and all data will be permanently deleted.",
   },
 }
-

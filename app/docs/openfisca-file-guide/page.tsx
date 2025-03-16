@@ -1,4 +1,4 @@
-いた"use client"
+"use client"
 
 import { MarkdownFileView } from "@/components/markdown-view"
 

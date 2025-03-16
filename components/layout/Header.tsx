@@ -1,6 +1,6 @@
 import type React from "react"
 import Link from "next/link"
-import { useTestContext } from "@/contexts/TestContext"
+import { useTest } from "@/contexts/test-context"
 import { CheckCircle, XCircle, Loader2 } from "lucide-react"
 
 interface HeaderProps {
@@ -14,14 +14,28 @@ interface HeaderProps {
  * @returns {JSX.Element} Header component
  */
 const Header: React.FC<HeaderProps> = ({ title }) => {
-  const { testStatus, isLoading } = useTestContext()
+  const { isRunning: isLoading, results } = useTest()
+
+  // テスト状態を生成
+  const testStatus = {
+    total: results?.length || 0,
+    passed: results?.filter((test: any) => test.passed)?.length || 0,
+    isSuccess: results?.length > 0 && results?.every((test: any) => test.passed)
+  }
 
   return (
     <header className="bg-primary text-primary-foreground p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold">
-          {title}
-        </Link>
+        <div className="flex items-center gap-6">
+          <Link href="/" className="text-xl font-bold">
+            {title}
+          </Link>
+          <nav className="flex items-center gap-4">
+            <Link href="/docs" className="text-sm hover:underline">
+              ドキュメント
+            </Link>
+          </nav>
+        </div>
         <div className="flex items-center gap-2">
           {isLoading ? (
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-sm">
@@ -50,4 +64,3 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 }
 
 export default Header
-

@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { Sidebar } from "@/components/sidebar"
-import { InstitutionDetails } from "@/components/institution-details"
-import { TestCasePanel } from "@/components/test-case-panel"
-import { CodeEditorPanel } from "@/components/code-editor-panel"
-import { MermaidPanel } from "@/components/mermaid-panel"
-import { ParameterPanel } from "@/components/parameter-panel"
-import { SimulationPanel } from "@/components/simulation-panel"
+import { Sidebar } from "@/components/shared/sidebar"
+import { InstitutionDetails } from "@/components/institution/institution-details"
+import { TestCasePanel } from "@/components/test/test-case-panel"
+import { CodeEditorPanel } from "@/components/editor/code-editor-panel"
+import { MermaidPanel } from "@/components/visualization/mermaid-panel"
+import { ParameterPanel } from "@/components/institution/parameter-panel"
+import { SimulationPanel } from "@/components/visualization/simulation-panel"
 import type { Institution } from "@/lib/types"
 import { fetchInstitutions, deleteInstitution, exportToOpenFisca } from "@/lib/api"
 import { Button } from "@/components/ui/button"
@@ -45,6 +45,14 @@ export default function OpenFiscaEditor() {
     setLoading(true)
     const institutions = await fetchInstitutions()
     setInstitutions(institutions)
+
+    // 児童手当（sample-1）を初期選択
+    const childcareIndex = institutions.findIndex(inst => inst.id === 'sample-1')
+    if (childcareIndex !== -1) {
+      setSelectedInstitutionIndex(childcareIndex)
+      setSelectedInstitution(institutions[childcareIndex])
+    }
+
     setLoading(false)
   }
 
@@ -76,7 +84,10 @@ export default function OpenFiscaEditor() {
 
   const handleBulkExport = async () => {
     const selected = institutions.filter((institution) => selectedInstitutions.includes(institution.id))
-    await exportToOpenFisca(selected)
+    // 複数の制度があれば、それぞれをエクスポート
+    for (const institution of selected) {
+      await exportToOpenFisca(institution)
+    }
   }
 
   const handleBulkDelete = async () => {
@@ -219,9 +230,9 @@ export default function OpenFiscaEditor() {
               </div>
 
               <div className="space-y-6">
-                <SimulationPanel institution={selectedInstitution} />
                 <CodeEditorPanel institution={selectedInstitution} onUpdate={handleInstitutionUpdate} />
-                <ParameterPanel institution={selectedInstitution} onUpdate={handleInstitutionUpdate} />
+                <SimulationPanel institution={selectedInstitution} />
+                {/* <ParameterPanel institution={selectedInstitution} onUpdate={handleInstitutionUpdate} /> */}
                 {/* TestRunnerPanelを削除 */}
               </div>
             </div>
@@ -238,11 +249,11 @@ export default function OpenFiscaEditor() {
                       formulaCode: `"""
 新しい制度 の実装
 
-概要: 
-利用条件: 
-所管部署: 
-掲載URL: 
-申請先URL: 
+概要:
+利用条件:
+所管部署:
+掲載URL:
+申請先URL:
 """
 
 import numpy as np
@@ -264,6 +275,8 @@ class 新しい制度(Variable):
         return 0`,
                       testCases: [],
                       parameters: [],
+                      versions: [],
+                      currentVersion: "",
                     })
                   }
                 >
@@ -277,4 +290,3 @@ class 新しい制度(Variable):
     </TestProvider>
   )
 }
-

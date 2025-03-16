@@ -15,8 +15,8 @@ export function useAI() {
 }
 
 export function AIProvider({ children }: { children: ReactNode }) {
-  // APIキーは環境変数から取得
-  const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY || null
+  // サーバーサイドのAPIキーを優先的に使用し、フォールバックとしてクライアントサイドのAPIキーを使用
+  const apiKey = process.env.OPENAI_API_KEY || null
 
   return <AIContext.Provider value={{ apiKey }}>{children}</AIContext.Provider>
 }

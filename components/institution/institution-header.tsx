@@ -66,13 +66,13 @@ export function InstitutionHeader({
     testResults ||
     (lastTest
       ? {
-          stdout: lastTest.details.passed + " tests passed",
-          stderr: lastTest.details.errors?.join("\n") || "",
-          returncode: lastTest.success ? 0 : 1,
-          passed: lastTest.details.passed,
-          failed: lastTest.details.failed,
-          total: lastTest.details.total,
-        }
+        stdout: lastTest.details.passed + " tests passed",
+        stderr: lastTest.details.errors?.join("\n") || "",
+        returncode: lastTest.success ? 0 : 1,
+        passed: lastTest.details.passed,
+        failed: lastTest.details.failed,
+        total: lastTest.details.total,
+      }
       : null)
 
   const handleRevert = async (version: Version) => {
@@ -92,14 +92,14 @@ export function InstitutionHeader({
     displayTestResults?.stderr && displayTestResults.stderr.includes("backend service may not be running")
 
   return (
-    <div className="fixed top-0 left-0 right-0 md:left-64 lg:left-80 z-50 bg-background/95 backdrop-blur-sm py-3 border-b shadow-sm">
-      <div className="flex justify-between items-center max-w-7xl mx-auto px-4">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold text-primary">{institution.name}</h1>
+    <div className="fixed top-0 left-0 right-0 md:left-64 lg:left-80 z-50 bg-background/95 backdrop-blur-sm py-2 border-b shadow-sm">
+      <div className="flex justify-between items-center max-w-7xl mx-auto px-3">
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold text-primary">{institution.name}</h1>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {/* Version Count */}
-            <Badge variant="outline" className="flex items-center gap-1">
+            <Badge variant="outline" className="flex items-center gap-1 text-xs">
               <History className="h-3 w-3" />
               {versions.length} Commits
             </Badge>
@@ -108,11 +108,10 @@ export function InstitutionHeader({
             {displayTestResults && (
               <Badge
                 variant={displayTestResults.returncode === 0 ? "outline" : "destructive"}
-                className={`flex items-center gap-1 cursor-pointer hover:opacity-80 ${
-                  displayTestResults.returncode === 0
+                className={`flex items-center gap-1 cursor-pointer hover:opacity-80 text-xs ${displayTestResults.returncode === 0
                     ? "bg-green-50 text-green-700 hover:bg-green-100 border-green-300"
                     : ""
-                }`}
+                  }`}
                 onClick={() => setIsTestResultsModalOpen(true)}
               >
                 {displayTestResults.returncode === 0 ? (
@@ -121,7 +120,7 @@ export function InstitutionHeader({
                   <XCircle className="h-3 w-3" />
                 )}
                 {displayTestResults.returncode === 0
-                  ? `${displayTestResults.passed || 0}/${displayTestResults.total || institution.testCases?.length || 0} テスト成功`
+                  ? `${displayTestResults.passed || 0}/${displayTestResults.total || institution.testCases?.length || 0}`
                   : isBackendError
                     ? "バックエンド未接続"
                     : "テスト失敗"}
@@ -130,13 +129,13 @@ export function InstitutionHeader({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {/* Version History Dropdown */}
           {versions.length > 0 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
-                  <History className="h-4 w-4" />
+                <Button variant="outline" size="sm" className="flex items-center gap-1.5">
+                  <History className="h-3.5 w-3.5" />
                   履歴
                 </Button>
               </DropdownMenuTrigger>
@@ -144,17 +143,17 @@ export function InstitutionHeader({
                 {versions.map((version) => (
                   <DropdownMenuItem
                     key={version.id}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between py-1.5"
                     onClick={() => handleRevert(version)}
                   >
                     <div className="flex flex-col">
-                      <span className="font-medium">{version.message}</span>
-                      <span className="text-sm text-muted-foreground">
+                      <span className="font-medium text-sm">{version.message}</span>
+                      <span className="text-xs text-muted-foreground">
                         {new Date(version.timestamp).toLocaleString()}
                       </span>
                     </div>
                     {version.testResults && (
-                      <Badge variant={version.testResults.success ? "default" : "destructive"} className="ml-2">
+                      <Badge variant={version.testResults.success ? "default" : "destructive"} className="ml-2 text-xs">
                         {version.testResults.success ? (
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                         ) : (
@@ -169,63 +168,43 @@ export function InstitutionHeader({
             </DropdownMenu>
           )}
 
-          <Button variant="outline" onClick={onShare} className="flex items-center gap-2">
-            <Share2 className="h-4 w-4" />
+          <Button variant="outline" size="sm" onClick={onShare} className="flex items-center gap-1.5">
+            <Share2 className="h-3.5 w-3.5" />
             公開
           </Button>
 
-          <Button variant="outline" onClick={onExport} className="flex items-center gap-2">
-            <Download className="h-4 w-4" />
+          <Button variant="outline" size="sm" onClick={onExport} className="flex items-center gap-1.5">
+            <Download className="h-3.5 w-3.5" />
             エクスポート
           </Button>
 
-          <Button variant="outline" onClick={onCopyUrl} className="flex items-center gap-2">
-            <Link2 className="h-4 w-4" />
+          <Button variant="outline" size="sm" onClick={onCopyUrl} className="flex items-center gap-1.5">
+            <Link2 className="h-3.5 w-3.5" />
             URLをコピー
           </Button>
 
           {institution.source === "user" && (
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setIsDeleteDialogOpen(true)}
-              className="flex items-center gap-2 text-destructive border-destructive/30 hover:bg-destructive/10"
+              className="flex items-center gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/10"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5" />
               削除
             </Button>
           )}
         </div>
       </div>
 
-      {/* Test Error Alert */}
-      {displayTestResults && displayTestResults.returncode !== 0 && displayTestResults.stderr && !isBackendError && (
-        <div className="bg-destructive/10 p-3 mt-3 max-w-7xl mx-auto px-4 rounded-md">
-          <div className="flex items-start gap-2">
-            <XCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <p className="font-medium text-destructive">テストが失敗しました</p>
-              <div className="mt-1 text-sm text-destructive/90">
-                <p>{displayTestResults.stderr.split("\n")[0]}</p>
-              </div>
-              {currentVersion && versions.length > 0 && currentVersion.id !== versions[0].id && (
-                <Button variant="outline" size="sm" onClick={() => handleRevert(versions[0])} className="mt-2 gap-1">
-                  <RotateCcw className="h-3 w-3" />
-                  前のバージョンに戻す
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Backend Connection Error Alert */}
       {isBackendError && (
-        <div className="bg-amber-500/10 p-3 mt-3 max-w-7xl mx-auto px-4 rounded-md">
+        <div className="bg-amber-500/10 p-2 mt-2 max-w-7xl mx-auto px-3 rounded-md">
           <div className="flex items-start gap-2">
-            <AlertCircle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
+            <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="font-medium text-amber-600">OpenFiscaバックエンドに接続できません</p>
-              <div className="mt-1 text-sm text-amber-600/90">
+              <p className="font-medium text-amber-600 text-sm">OpenFiscaバックエンドに接続できません</p>
+              <div className="mt-1 text-xs text-amber-600/90">
                 <p>
                   バックエンドサービスが実行されていないようです。実際のテスト結果を表示するには、OpenFiscaバックエンドを起動してください。
                 </p>
@@ -238,7 +217,7 @@ export function InstitutionHeader({
 
       {/* Sample Institution Warning */}
       {institution.source === "sample" && (
-        <div className="bg-muted/50 p-3 rounded-md text-sm text-muted-foreground mt-3 max-w-7xl mx-auto px-4">
+        <div className="bg-muted/50 p-2 rounded-md text-xs text-muted-foreground mt-2 max-w-7xl mx-auto px-3">
           <p>
             これはサンプル制度です。編集内容は保存されません。独自の制度を作成するには、サイドバーの「+」ボタンをクリックしてください。
           </p>

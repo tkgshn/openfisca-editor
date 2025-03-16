@@ -71,7 +71,7 @@ export const ja = {
     edit: "パラメータを編集",
     create: "パラメータを作成",
     name: "パラメータ名",
-    description: "説明",
+    paramDescription: "説明",
     referenceUrl: "参照URL",
     unit: "単位",
     value: "値",
@@ -141,4 +141,3 @@ export const ja = {
     deleteAccountDescription: "この操作は元に戻せません。アカウントとすべてのデータが完全に削除されます。",
   },
 }
-

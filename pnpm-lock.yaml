@@ -239,7 +239,7 @@ devDependencies:
     specifier: ^19
     version: 19.0.10
   '@types/react-dom':
-    specifier: ^19
+    specifier: ^19.0.4
     version: 19.0.4(@types/react@19.0.10)
   postcss:
     specifier: ^8

@@ -153,10 +153,6 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
               <Moon className="h-4 w-4" />
               <span>{t.settings.theme}</span>
             </TabsTrigger>
-            <TabsTrigger value="docs" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              <span>ドキュメント</span>
-            </TabsTrigger>
             <TabsTrigger value="danger" className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
               <span>{t.settings.dangerZone}</span>
@@ -353,31 +349,6 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             </Card>
           </TabsContent>
 
-          {/* ドキュメント */}
-          <TabsContent value="docs" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>ドキュメント</CardTitle>
-                <CardDescription>OpenFisca Editorのドキュメントを確認できます。</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  {documents.map((doc) => (
-                    <Link href={doc.path} key={doc.id} target="_blank" rel="noopener noreferrer">
-                      <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
-                        <CardHeader className="py-4">
-                          <CardTitle className="text-base flex items-center gap-2">
-                            {doc.icon}
-                            {doc.name}
-                          </CardTitle>
-                        </CardHeader>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           {/* 危険ゾーン */}
           <TabsContent value="danger" className="space-y-4">

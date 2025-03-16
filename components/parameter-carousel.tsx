@@ -1,25 +1,43 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react"
+import { useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight, ExternalLink, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Parameter } from "@/lib/types"
 import { ParameterDetailModal } from "./parameter-detail-modal"
+import { ParameterModal } from "./parameter-modal"
 
 interface ParameterCarouselProps {
   parameters: Parameter[]
   className?: string
+  onUpdate?: (parameters: Parameter[]) => void
 }
 
-export function ParameterCarousel({ parameters, className = "" }: ParameterCarouselProps) {
+export function ParameterCarousel({ parameters, className = "", onUpdate }: ParameterCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedParameter, setSelectedParameter] = useState<Parameter | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [displayCount, setDisplayCount] = useState(3)
 
-  // 表示するパラメータの数（レスポンシブ対応）
-  const displayCount = 3
+  // ウィンドウサイズに応じて表示数を調整
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) { // sm
+        setDisplayCount(1)
+      } else if (window.innerWidth < 1024) { // md
+        setDisplayCount(2)
+      } else { // lg以上
+        setDisplayCount(3)
+      }
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : 0))
@@ -31,7 +49,23 @@ export function ParameterCarousel({ parameters, className = "" }: ParameterCarou
 
   const handleOpenDetail = (parameter: Parameter) => {
     setSelectedParameter(parameter)
-    setIsModalOpen(true)
+    setIsDetailModalOpen(true)
+  }
+
+  const handleCreateParameter = () => {
+    setIsCreateModalOpen(true)
+  }
+
+  const handleSaveParameter = (parameter: Parameter) => {
+    if (onUpdate) {
+      const updatedParameters = [...parameters, parameter]
+      onUpdate(updatedParameters)
+    }
+    setIsCreateModalOpen(false)
+  }
+
+  const handleDeleteParameter = () => {
+    // 新規作成時は削除機能は使用しない
   }
 
   const formatValue = (value: number, unit?: string) => {
@@ -42,8 +76,36 @@ export function ParameterCarousel({ parameters, className = "" }: ParameterCarou
   }
 
   if (!parameters || parameters.length === 0) {
-    return null
+    return (
+      <div className={`${className} space-y-2`}>
+        <div className="flex justify-between items-center">
+          <h3 className="text-sm font-medium">パラメータ</h3>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleCreateParameter}
+            className="flex items-center gap-1"
+          >
+            <Plus className="h-4 w-4" />
+            パラメータを追加
+          </Button>
+        </div>
+        <div className="bg-muted/50 rounded-lg p-8 text-center text-muted-foreground">
+          パラメータがありません
+        </div>
+        <ParameterModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSave={handleSaveParameter}
+          onDelete={handleDeleteParameter}
+          isEditing={false}
+        />
+      </div>
+    )
   }
+
+  // パラメータの数が表示数以下の場合は、ナビゲーション矢印を非表示
+  const showNavigation = parameters.length > displayCount
 
   return (
     <>
@@ -53,26 +115,39 @@ export function ParameterCarousel({ parameters, className = "" }: ParameterCarou
           <div className="flex gap-1">
             <Button
               variant="outline"
-              size="icon"
-              className="h-7 w-7"
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
+              size="sm"
+              onClick={handleCreateParameter}
+              className="flex items-center gap-1"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <Plus className="h-4 w-4" />
+              パラメータを追加
             </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-7 w-7"
-              onClick={handleNext}
-              disabled={currentIndex >= parameters.length - displayCount}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+            {showNavigation && (
+              <>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={handlePrevious}
+                  disabled={currentIndex === 0}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={handleNext}
+                  disabled={currentIndex >= parameters.length - displayCount}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className={`grid grid-cols-${displayCount} gap-3`}>
           {parameters.slice(currentIndex, currentIndex + displayCount).map((parameter, index) => (
             <Card
               key={index}
@@ -110,10 +185,18 @@ export function ParameterCarousel({ parameters, className = "" }: ParameterCarou
       {selectedParameter && (
         <ParameterDetailModal
           parameter={selectedParameter}
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isDetailModalOpen}
+          onClose={() => setIsDetailModalOpen(false)}
         />
       )}
+
+      <ParameterModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={handleSaveParameter}
+        onDelete={handleDeleteParameter}
+        isEditing={false}
+      />
     </>
   )
 }

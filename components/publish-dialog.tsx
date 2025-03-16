@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { SimulationPanel } from "@/components/simulation-panel"
+import { SimulationPanel } from "@/components/visualization/simulation-panel"
 import { Copy, Check, Globe, Lock, Users, ArrowRight } from "lucide-react"
 import type { Institution } from "@/lib/types"
 
@@ -128,4 +128,3 @@ export function PublishDialog({ open, onOpenChange, institution, onPublish }: Pu
     </Dialog>
   )
 }
-

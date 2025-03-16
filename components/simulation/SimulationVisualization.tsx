@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useRef, useEffect, useState } from "react"
+// @ts-ignore - d3モジュールの型定義がない場合の警告を無視
 import * as d3 from "d3"
 
 interface SimulationData {
@@ -50,18 +51,18 @@ const SimulationVisualization: React.FC<SimulationVisualizationProps> = ({ data 
 
     const x = d3
       .scaleLinear()
-      .domain(d3.extent(data, (d) => d.time) as [number, number])
+      .domain(d3.extent(data, (d: SimulationData) => d.time) as [number, number])
       .range([0, width])
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(data, (d) => d.value) as number])
+      .domain([0, d3.max(data, (d: SimulationData) => d.value) as number])
       .range([height, 0])
 
     const line = d3
       .line<SimulationData>()
-      .x((d) => x(d.time))
-      .y((d) => y(d.value))
+      .x((d: SimulationData) => x(d.time))
+      .y((d: SimulationData) => y(d.value))
 
     const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`)
 
@@ -87,4 +88,3 @@ const SimulationVisualization: React.FC<SimulationVisualizationProps> = ({ data 
 }
 
 export default SimulationVisualization
-

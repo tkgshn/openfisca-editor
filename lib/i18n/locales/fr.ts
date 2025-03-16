@@ -73,7 +73,7 @@ export const fr = {
     edit: "Modifier le paramètre",
     create: "Créer un paramètre",
     name: "Nom du paramètre",
-    description: "Description",
+    paramDescription: "Description",
     referenceUrl: "URL de référence",
     unit: "Unité",
     value: "Valeur",
@@ -148,4 +148,3 @@ export const fr = {
       "Cette action ne peut pas être annulée. Votre compte et toutes les données seront définitivement supprimés.",
   },
 }
-

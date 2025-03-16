@@ -34,6 +34,7 @@ export function TestProvider({ children }: { children: ReactNode }) {
 
     try {
       const abortController = new AbortController()
+      // yamlContentを第2引数として渡す
       const testResults = await runTest(institutionId, testContent, abortController.signal).catch((error) => {
         console.error("Error in runTest:", error)
         // エラーが発生した場合でもモックデータを返す
@@ -124,4 +125,3 @@ export function useTest() {
   }
   return context
 }
-

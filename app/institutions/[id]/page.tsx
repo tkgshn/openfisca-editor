@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { fetchInstitutionById } from "@/lib/api"
-import InstitutionDetails from "@/components/institution/InstitutionDetails"
-import type { Institution } from "@/types/types"
+import { InstitutionDetails } from "@/components/institution/institution-details"
+import type { Institution } from "@/lib/types"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function InstitutionPage() {
@@ -43,6 +43,20 @@ export default function InstitutionPage() {
     return <div className="p-4 text-red-600">{error || "Institution not found"}</div>
   }
 
-  return <InstitutionDetails institution={institution} />
-}
+  // 表示専用なので、更新と削除の関数はダミーを渡す
+  const handleUpdate = (_: Institution) => {
+    console.log("更新機能は表示専用ページでは使用できません")
+  }
 
+  const handleDelete = (_: string) => {
+    console.log("削除機能は表示専用ページでは使用できません")
+  }
+
+  return (
+    <InstitutionDetails
+      institution={institution}
+      onUpdate={handleUpdate}
+      onDelete={handleDelete}
+    />
+  )
+}

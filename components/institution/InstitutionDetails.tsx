@@ -7,7 +7,7 @@ import type { Institution } from "@/types/types"
 import InstitutionHeader from "./InstitutionHeader"
 import TestRunnerPanel from "@/components/test/TestRunnerPanel"
 import SimulationPanel from "@/components/simulation/SimulationPanel"
-import { useTestContext } from "@/contexts/TestContext"
+import { useTest } from "@/contexts/test-context"
 
 interface InstitutionDetailsProps {
   institution: Institution
@@ -20,7 +20,7 @@ interface InstitutionDetailsProps {
  * @returns {JSX.Element} Institution details component
  */
 const InstitutionDetails: React.FC<InstitutionDetailsProps> = ({ institution }) => {
-  const { runTests } = useTestContext()
+  const { runTestForInstitution: runTests } = useTest()
 
   // Run tests automatically when the institution is loaded
   useEffect(() => {
@@ -61,4 +61,3 @@ const InstitutionDetails: React.FC<InstitutionDetailsProps> = ({ institution }) 
 }
 
 export default InstitutionDetails
-

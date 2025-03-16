@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Save, Link2, FileText, Users } from "lucide-react"
@@ -109,7 +109,8 @@ export function InstitutionDetails({ institution, onUpdate, onDelete }: Institut
   const handleSave = async () => {
     try {
       // Extract header from existing code
-      const headerRegex = /^""".*?"""/s
+      // ※TypeScriptのターゲットがES2018未満の場合、/s フラグはサポートされていない
+      const headerRegex = /^"""[\s\S]*?"""/
       let restOfCode = ""
       if (headerRegex.test(institution.formulaCode)) {
         restOfCode = institution.formulaCode.replace(headerRegex, "")
@@ -238,7 +239,9 @@ ${formData.name} の実装
           const updatedInstitution = await revertToVersion(institution, versionId)
           onUpdate(updatedInstitution)
         }}
-        onDelete={onDelete}
+        onDelete={async (id) => {
+          await onDelete(id);
+        }}
         onExport={handleExportInstitution}
         onShare={handlePublishButtonClick}
         onCopyUrl={() => {
@@ -253,7 +256,14 @@ ${formData.name} の実装
       />
 
       <Card className="shadow-sm hover:shadow transition-shadow duration-200">
-        <CardContent className="pt-6">
+        <CardHeader className="flex flex-row items-center justify-between pb-6">
+          <CardTitle>制度情報</CardTitle>
+          <Button onClick={handleSave} className="flex items-center gap-2">
+            <Save className="h-4 w-4" />
+            保存
+          </Button>
+        </CardHeader>
+        <CardContent>
           <Tabs defaultValue="basic" className="w-full">
             <TabsList className="mb-4">
               <TabsTrigger value="basic" className="flex items-center gap-1">
@@ -318,12 +328,6 @@ ${formData.name} の実装
             </TabsContent>
           </Tabs>
         </CardContent>
-        <CardFooter className="flex justify-end border-t pt-4">
-          <Button onClick={handleSave} className="flex items-center gap-2">
-            <Save className="h-4 w-4" />
-            制度を保存
-          </Button>
-        </CardFooter>
       </Card>
 
       <PublishPopover
@@ -342,4 +346,3 @@ ${formData.name} の実装
     </div>
   )
 }
-

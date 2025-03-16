@@ -46,17 +46,17 @@ class 児童手当(Variable):
       # 子供の年齢を取得
       子一覧 = 対象世帯.members('子一覧', 対象期間)
       子の年齢 = 対象世帯.members('年齢', 対象期間)
-      
+
       # 3歳未満、3歳以上小学校修了前、中学生の子供の数を計算
       三歳未満の子供数 = 対象世帯.sum(np.logical_and(子一覧, 子の年齢 < 3))
       三歳以上小学生の子供数 = 対象世帯.sum(np.logical_and(子一覧, np.logical_and(子の年齢 >= 3, 子の年齢 < 12)))
       中学生の子供数 = 対象世帯.sum(np.logical_and(子一覧, np.logical_and(子の年齢 >= 12, 子の年齢 < 15)))
-      
+
       # 所得制限を考慮（簡略化のため、所得制限は考慮しない）
-      
+
       # 支給額を計算
       支給額 = (三歳未満の子供数 * 15000) + (三歳以上小学生の子供数 * 10000) + (中学生の子供数 * 10000)
-      
+
       return 支給額`,
     testCases: [
       {
@@ -231,25 +231,25 @@ class 特別児童扶養手当(Variable):
       # 子供の年齢と障害状態を取得
       子一覧 = 対象世帯.members('子一覧', 対象期間)
       子の年齢 = 対象世帯.members('年齢', 対象期間)
-      
+
       # 簡略化のため、障害の程度は仮定する
       # 実際には障害の程度を示す変数が必要
       重度障害 = 対象世帯.members('重度障害', 対象期間) if '重度障害' in parameters else np.zeros(子の年齢.shape)
       中度障害 = 対象世帯.members('中度障害', 対象期間) if '中度障害' in parameters else np.zeros(子の年齢.shape)
-      
+
       # 20歳未満の子供を対象とする
       対象児童 = np.logical_and(子一覧, 子の年齢 < 20)
-      
+
       # 1級（重度）の障害児の数
       一級障害児数 = 対象世帯.sum(np.logical_and(対象児童, 重度障害))
-      
+
       # 2級（中度）の障害児の数
       二級障害児数 = 対象世帯.sum(np.logical_and(対象児童, 中度障害))
-      
+
       # 支給額を計算（2023年4月現在）
       一級支給額 = 一級障害児数 * 52400  # 1級: 月額52,400円
       二級支給額 = 二級障害児数 * 34900  # 2級: 月額34,900円
-      
+
       return 一級支給額 + 二級支給額`,
     testCases: [
       {
@@ -381,10 +381,10 @@ output:
 3の倍数給付金 の実装
 
 概要: 年齢が3の倍数の世帯員の1人につき、年間10万円を給付する架空の制度。一部の学生については追加で年間3万円を給付する。
-利用条件: 
-所管部署: 
-掲載URL: 
-申請先URL: 
+利用条件:
+所管部署:
+掲載URL:
+申請先URL:
 """
 
 import numpy as np
@@ -553,7 +553,7 @@ output:
   {
     id: "sample-4",
     source: "sample",
-    name: "子育てめっちゃ頑張ってください助成金",
+    name: "子育て助成金",
     summary: "各世帯における子供の数と子供の年齢に応じて給付金を配布する制度",
     url: "",
     conditions: "一定収入以上の世帯は対象になりません。子供の年齢に応じて給付額が変わります。",
@@ -561,13 +561,13 @@ output:
     postingUrl: "",
     applicationUrl: "",
     formulaCode: `"""
-子育てめっちゃ頑張ってください助成金 の実装
+子育て助成金 の実装
 
 概要: 各世帯における子供の数と子供の年齢に応じて給付金を配布する制度
 利用条件: 一定収入以上の世帯は対象になりません。子供の年齢に応じて給付額が変わります。
 所管部署: 内閣府
-掲載URL: 
-申請先URL: 
+掲載URL:
+申請先URL:
 """
 
 from openfisca_core.periods import DAY
@@ -576,7 +576,7 @@ from openfisca_japan.entities import 世帯
 from openfisca_japan.variables.年齢 import 年齢
 from openfisca_japan.variables.世帯収入 import 世帯収入
 
-class 子育てめっちゃ頑張ってください助成金(Variable):
+class 子育て助成金(Variable):
     value_type = float
     entity = 世帯
     definition_period = DAY
@@ -598,11 +598,11 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
 
         # 3. 世帯員の年齢リストを取得
         ages = 世帯.members(年齢, period)
-        
+
         # 4. 収入が threshold 以上の場合は支給なし
         if income >= threshold:
             return 0.0
-            
+
         # 5. 子ども1人ごとに年齢帯に応じて給付額を合計
         total = 0.0
         for (let age of ages) {
@@ -647,7 +647,7 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
         amount: 0,
       },
     ],
-    testYamlRaw: `# 子育てめっちゃ頑張ってください助成金のテスト
+    testYamlRaw: `# 子育て助成金のテスト
 
 - name: ケース1 - 0-3歳の子供
   period: 2023-01-01
@@ -660,7 +660,7 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
       世帯収入: 6000000
   output:
     世帯:
-      子育てめっちゃ頑張ってください助成金: 15000
+      子育て助成金: 15000
 
 - name: ケース2 - 3-5歳の子供
   period: 2023-01-01
@@ -673,7 +673,7 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
       世帯収入: 6000000
   output:
     世帯:
-      子育てめっちゃ頑張ってください助成金: 10000
+      子育て助成金: 10000
 
 - name: ケース3 - 6-10歳の子供
   period: 2023-01-01
@@ -686,7 +686,7 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
       世帯収入: 6000000
   output:
     世帯:
-      子育てめっちゃ頑張ってください助成金: 5000
+      子育て助成金: 5000
 
 - name: ケース4 - 複数の子供
   period: 2023-01-01
@@ -702,7 +702,7 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
       世帯収入: 7000000
   output:
     世帯:
-      子育てめっちゃ頑張ってください助成金: 30000
+      子育て助成金: 30000
 
 - name: ケース5 - 収入超過で対象外
   period: 2023-01-01
@@ -715,7 +715,7 @@ class 子育てめっちゃ頑張ってください助成金(Variable):
       世帯収入: 9000000
   output:
     世帯:
-      子育てめっちゃ頑張ってください助成金: 0`,
+      子育て助成金: 0`,
     mermaidCode: `flowchart TD
 A["開始"] --> B{"世帯収入が閾値以下か確認"}
 B -->|"いいえ（閾値以上）"| C["支給なし（0円）"]
@@ -843,11 +843,11 @@ export async function createInstitution(name: string): Promise<Institution> {
     formulaCode: `"""
 ${name} の実装
 
-概要: 
-利用条件: 
-所管部署: 
-掲載URL: 
-申請先URL: 
+概要:
+利用条件:
+所管部署:
+掲載URL:
+申請先URL:
 """
 
 import numpy as np
