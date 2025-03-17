@@ -20,7 +20,6 @@ export function MarkdownView({ content }: MarkdownViewProps) {
       <ReactMarkdown
         remarkPlugins={[
           remarkGfm,
-          // remarkMermaid,
           [remarkToc, { heading: '目次', tight: true }],
         ]}
         rehypePlugins={[rehypeHighlight, rehypeSlug]}
