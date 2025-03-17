@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "buildCommand": "pnpm run build",
+    "installCommand": "pnpm install",
+    "framework": "nextjs",
+    "outputDirectory": ".next",
+    "git": {
+        "deploymentEnabled": {
+            "main": true,
+            "stable-revision-35117d2": true,
+            "production": true
+        }
+    },
+    "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
+}
