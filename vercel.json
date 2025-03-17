@@ -23,5 +23,8 @@
       "source": "/docs",
       "destination": "/docs/installation"
     }
-  ]
+  ],
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next"
 }

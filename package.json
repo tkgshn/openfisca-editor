@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
+    "node": "18.x"
   },
   "scripts": {
     "dev": "next dev",
@@ -15,7 +14,8 @@
   "dependencies": {
     "@ai-sdk/openai": "latest",
     "@babel/runtime": "latest",
-    "@codemirror/lang-python": "latest",
+    "@blockly/dev-tools": "^8.0.12",
+    "@codemirror/lang-python": "^6.1.7",
     "@codemirror/language": "latest",
     "@codemirror/lint": "latest",
     "@codemirror/state": "latest",
@@ -51,9 +51,10 @@
     "@radix-ui/react-tooltip": "^1.1.6",
     "@uiw/codemirror-theme-github": "latest",
     "@uiw/codemirror-theme-vscode": "latest",
-    "@uiw/react-codemirror": "latest",
+    "@uiw/react-codemirror": "^4.23.10",
     "ai": "latest",
     "autoprefixer": "^10.4.20",
+    "blockly": "^11.2.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",
@@ -68,10 +69,12 @@
     "mermaid": "latest",
     "next": "15.1.0",
     "next-themes": "latest",
+    "openai": "^4.87.3",
     "plotly.js": "latest",
     "react": "^19",
     "react-day-picker": "8.10.1",
     "react-dom": "^19",
+    "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.54.1",
     "react-markdown": "^10.1.0",
     "react-plotly.js": "latest",
@@ -82,6 +85,7 @@
     "remark-gfm": "^4.0.1",
     "remark-mermaidjs": "^7.0.0",
     "remark-toc": "^9.0.0",
+    "simple-git": "^3.27.0",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
