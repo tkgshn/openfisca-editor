@@ -2,6 +2,11 @@
 
 OpenFisca Editor は、社会保障制度のシミュレーションと可視化のためのウェブアプリケーションです。特に日本の社会保障制度（OpenFisca-Japan）と連携して、制度設計・実装・テスト・可視化を支援します。
 
+[![Vercel デプロイ](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://openfisca-editor.vercel.app)
+[![GitHub リポジトリ](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tkgshn/openfisca-editor)
+
+👉 **[オンラインデモを試す](https://openfisca-editor.vercel.app)** 👈
+
 ## 機能概要
 
 - 社会保障制度の定義と編集

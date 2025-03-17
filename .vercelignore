@@ -1,0 +1,8 @@
+.git
+.github
+.gitignore
+README.md
+.env*.local
+package-lock.json
+pnpm-lock.yaml
+node_modules

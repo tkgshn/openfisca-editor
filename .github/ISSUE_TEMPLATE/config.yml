@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: OpenFisca Editor Demo
+    url: https://openfisca-editor.vercel.app
+    about: Check out the live demo of the OpenFisca Editor
+  - name: Documentation
+    url: https://github.com/tkgshn/openfisca-editor/tree/main/docs
+    about: Read the developer documentation

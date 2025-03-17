@@ -956,6 +956,29 @@ export async function deleteInstitution(institutionId: string): Promise<void> {
 
 // テスト実行
 export async function runTest(institutionId: string, yamlContent: string, signal?: AbortSignal): Promise<any> {
+  // デモモードかどうかをチェック
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  
+  if (isDemoMode) {
+    // デモモードではモックデータを返す
+    console.log("Demo mode: Using mock test results");
+    const institution = await getMockOrRealInstitution(institutionId);
+    const testCasesCount = institution?.testCases?.length || 0;
+
+    return {
+      stdout: `${testCasesCount} tests passed\nAll tests passed successfully! (Demo Mode)`,
+      stderr: "",
+      returncode: 0,
+      timestamp: new Date().toISOString(),
+      duration: 0.5,
+      passed: testCasesCount,
+      failed: 0,
+      total: testCasesCount,
+      isMock: true,
+      demoMode: true
+    };
+  }
+  
   try {
     // Try to connect to the local backend with timeout
     const controller = signal ? undefined : new AbortController();
@@ -998,6 +1021,7 @@ export async function runTest(institutionId: string, yamlContent: string, signal
     } catch (fetchError) {
       console.error("Fetch error:", fetchError);
       // バックエンドが利用できない場合のモックデータを返す
+      console.log("Falling back to mock test results");
       const institution = await getMockOrRealInstitution(institutionId);
       const testCasesCount = institution?.testCases?.length || 0;
 
@@ -1338,6 +1362,29 @@ export async function getCommitDetails(commitHash: string): Promise<string> {
 
 // シミュレーション実行
 export async function runSimulation(institutionId: string, params: any): Promise<any> {
+  // デモモードかどうかをチェック
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
+  
+  if (isDemoMode) {
+    // デモモードの場合は、サンプルデータを返す
+    console.log("Demo mode: Using client-side simulation");
+    try {
+      // import関数は非同期のため、dynamicなimportを行う
+      const simulationHelpers = await import('./simulation-helpers');
+      const fallbackData = simulationHelpers.generateFallbackSimulationData(
+        institutionId === 'sample-1' ? '児童手当' : 
+        institutionId === 'sample-2' ? '特別児童扶養手当' : 
+        institutionId === 'sample-3' ? '3の倍数給付金' : 
+        institutionId === 'sample-4' ? '子育て助成金' : '一般制度',
+        params
+      );
+      return fallbackData;
+    } catch (error) {
+      console.error("Demo mode simulation error:", error)
+      throw error;
+    }
+  }
+  
   try {
     // Try to connect to the local backend with timeout
     const controller = new AbortController();
@@ -1363,8 +1410,23 @@ export async function runSimulation(institutionId: string, params: any): Promise
       return data
     } catch (fetchError) {
       console.error("Simulation API error:", fetchError)
-      // API接続エラーの場合はfalseを返し、クライアント側でシミュレーションを実行させる
-      throw new Error(`Backend connection error: ${fetchError.message}. The backend service may not be running.`)
+      
+      // API接続エラーの場合はクライアントサイドのシミュレーションを実行
+      console.log("Falling back to client-side simulation");
+      try {
+        // import関数は非同期のため、dynamicなimportを行う
+        const simulationHelpers = await import('./simulation-helpers');
+        // 機関IDからシミュレーション名を推測
+        const institution = await getMockOrRealInstitution(institutionId);
+        const fallbackData = simulationHelpers.generateFallbackSimulationData(
+          institution?.name || '一般制度',
+          params
+        );
+        return fallbackData;
+      } catch (simError) {
+        console.error("Fallback simulation error:", simError);
+        throw new Error(`Backend connection error: ${fetchError.message}. Fallback simulation also failed.`);
+      }
     }
   } catch (error) {
     console.error("Failed to run simulation:", error)
