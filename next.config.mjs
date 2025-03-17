@@ -27,13 +27,27 @@ const nextConfig = {
   excludeDefaultMomentLocales: true,
 
   // mermaidに関する警告を抑制
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     // mermaid関連のモジュールを無視
     config.resolve.alias = {
       ...config.resolve.alias,
       'mermaid-isomorphic': false,
       'remark-mermaidjs': false
     };
+
+    // クライアントサイドでNode.jsモジュールを使用しないようにする
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        os: false,
+        crypto: false,
+        stream: false,
+        buffer: false,
+      };
+    }
+
     return config;
   }
 }
