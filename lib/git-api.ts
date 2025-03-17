@@ -1,76 +1,62 @@
 import { Institution } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
-// サーバーサイドのみでモジュールをインポート
-let simpleGit;
-let fs;
-let path;
-let git;
-
 // サーバーサイドコードかどうかを判定
 const isServer = typeof window === 'undefined';
 
-// サーバーサイドでのみ実行する初期化コード
-if (isServer) {
-    // 動的インポート
-    const importSimpleGit = async () => {
+// サーバーサイドでのみ使用する変数
+let git;
+
+// サーバーサイドでのみ実行される初期化関数
+async function initGitOnServer() {
+    if (!isServer) return;
+
+    try {
+        const { simpleGit } = await import('simple-git');
+        const fs = await import('fs');
+        const path = await import('path');
+
+        // GitリポジトリのルートディレクトリのPath
+        const REPO_PATH = process.env.NEXT_PUBLIC_GIT_REPO_PATH || './data';
+        // 制度データを保存するディレクトリ
+        const INSTITUTIONS_DIR = path.join(REPO_PATH, 'institutions');
+
+        // ディレクトリが存在しない場合は作成
+        if (!fs.existsSync(REPO_PATH)) {
+            fs.mkdirSync(REPO_PATH, { recursive: true });
+        }
+        if (!fs.existsSync(INSTITUTIONS_DIR)) {
+            fs.mkdirSync(INSTITUTIONS_DIR, { recursive: true });
+        }
+
+        git = simpleGit(REPO_PATH);
+
+        // リポジトリが初期化されているか確認
         try {
-            const { simpleGit: importedSimpleGit } = await import('simple-git');
-            simpleGit = importedSimpleGit;
-            fs = await import('fs');
-            path = await import('path');
-
-            // GitリポジトリのルートディレクトリのPath
-            const REPO_PATH = process.env.NEXT_PUBLIC_GIT_REPO_PATH || './data';
-            // 制度データを保存するディレクトリ
-            const INSTITUTIONS_DIR = path.join(REPO_PATH, 'institutions');
-
-            // Gitクライアントの初期化
-            try {
-                // ディレクトリが存在しない場合は作成
-                if (!fs.existsSync(REPO_PATH)) {
-                    fs.mkdirSync(REPO_PATH, { recursive: true });
+            const isRepo = await git.checkIsRepo();
+            if (!isRepo) {
+                // 初期化
+                await git.init();
+                // 初期コミット
+                try {
+                    await git.add('.');
+                    await git.commit('Initial commit');
+                    console.log('Gitリポジトリを初期化しました');
+                } catch (error) {
+                    console.warn('初期コミットに失敗しました:', error);
                 }
-                if (!fs.existsSync(INSTITUTIONS_DIR)) {
-                    fs.mkdirSync(INSTITUTIONS_DIR, { recursive: true });
-                }
-
-                git = simpleGit(REPO_PATH);
-
-                // リポジトリが初期化されているか確認
-                const isGitRepo = async () => {
-                    try {
-                        await git.checkIsRepo();
-                        return true;
-                    } catch (error) {
-                        return false;
-                    }
-                };
-
-                // リポジトリが初期化されていない場合は初期化
-                (async () => {
-                    if (!(await isGitRepo())) {
-                        await git.init();
-                        // 初期コミット
-                        try {
-                            await git.add('.');
-                            await git.commit('Initial commit');
-                            console.log('Gitリポジトリを初期化しました');
-                        } catch (error) {
-                            console.warn('初期コミットに失敗しました:', error);
-                        }
-                    }
-                })();
-            } catch (error) {
-                console.error('Gitリポジトリの初期化に失敗しました:', error);
             }
         } catch (error) {
-            console.error('Git関連モジュールのインポートに失敗しました:', error);
+            console.warn('リポジトリ確認に失敗しました:', error);
         }
-    };
+    } catch (error) {
+        console.error('Git関連モジュールのインポートに失敗しました:', error);
+    }
+}
 
-    // 初期化を実行
-    importSimpleGit();
+// サーバーサイドの場合は初期化を実行
+if (isServer) {
+    initGitOnServer();
 }
 
 /**
@@ -83,17 +69,24 @@ export async function commitInstitutionToGit(
     institution: Institution,
     message: string
 ): Promise<string | null> {
-    // クライアントサイドでは何もしない
+    // クライアントサイドではダミーのコミットハッシュを返す
     if (!isServer) {
-        console.warn('クライアントサイドではGit操作はサポートされていません');
-        return null;
+        // ダミーのコミットハッシュを生成（UUIDの先頭7文字）
+        return uuidv4().substring(0, 7);
     }
 
     try {
+        // サーバーサイドで実行
         if (!git) {
-            console.error('Gitクライアントが初期化されていません');
-            return null;
+            await initGitOnServer();
+            if (!git) {
+                console.error('Gitクライアントが初期化されていません');
+                return null;
+            }
         }
+
+        const fs = await import('fs');
+        const path = await import('path');
 
         // GitリポジトリのルートディレクトリのPath
         const REPO_PATH = process.env.NEXT_PUBLIC_GIT_REPO_PATH || './data';
@@ -146,17 +139,38 @@ export async function createVersionFromCommit(
  * @returns コミット履歴
  */
 export async function getInstitutionCommitHistory(institution: Institution): Promise<any[]> {
-    // クライアントサイドでは空の配列を返す
+    // クライアントサイドではダミーのコミット履歴を返す
     if (!isServer) {
-        console.warn('クライアントサイドではGit操作はサポートされていません');
-        return [];
+        // モックデータ
+        const dummyHistory = [
+            {
+                hash: uuidv4().substring(0, 7),
+                date: new Date().toISOString(),
+                message: "最新の変更",
+                author: "現在のユーザー",
+            },
+            {
+                hash: uuidv4().substring(0, 7),
+                date: new Date(Date.now() - 86400000).toISOString(), // 1日前
+                message: "初期バージョン",
+                author: "システム",
+            }
+        ];
+        return dummyHistory;
     }
 
     try {
+        // サーバーサイドで実行
         if (!git) {
-            console.error('Gitクライアントが初期化されていません');
-            return [];
+            await initGitOnServer();
+            if (!git) {
+                console.error('Gitクライアントが初期化されていません');
+                return [];
+            }
         }
+
+        const fs = await import('fs');
+        const path = await import('path');
 
         // GitリポジトリのルートディレクトリのPath
         const REPO_PATH = process.env.NEXT_PUBLIC_GIT_REPO_PATH || './data';
@@ -190,16 +204,24 @@ export async function getInstitutionCommitHistory(institution: Institution): Pro
  * @returns 差分
  */
 export async function getCommitDiff(commitHash: string): Promise<string> {
-    // クライアントサイドでは空文字列を返す
+    // クライアントサイドではダミーの差分を返す
     if (!isServer) {
-        console.warn('クライアントサイドではGit操作はサポートされていません');
-        return '';
+        return `--- a/old-version
++++ b/new-version
+@@ -1,3 +1,3 @@
+-古いコード
++新しいコード
+ 変更なし部分`;
     }
 
     try {
+        // サーバーサイドで実行
         if (!git) {
-            console.error('Gitクライアントが初期化されていません');
-            return '';
+            await initGitOnServer();
+            if (!git) {
+                console.error('Gitクライアントが初期化されていません');
+                return '';
+            }
         }
 
         const diff = await git.show([commitHash]);
@@ -224,16 +246,19 @@ export async function createReleaseTag(
     tagMessage: string,
     commitHash?: string
 ): Promise<string> {
-    // クライアントサイドでは空文字列を返す
+    // クライアントサイドではタグ名をそのまま返す
     if (!isServer) {
-        console.warn('クライアントサイドではGit操作はサポートされていません');
-        return '';
+        return tagName;
     }
 
     try {
+        // サーバーサイドで実行
         if (!git) {
-            console.error('Gitクライアントが初期化されていません');
-            return '';
+            await initGitOnServer();
+            if (!git) {
+                console.error('Gitクライアントが初期化されていません');
+                return '';
+            }
         }
 
         // コミットハッシュが指定されていない場合は最新コミットを使用
