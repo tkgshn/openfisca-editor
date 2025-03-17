@@ -7,7 +7,7 @@ import rehypeHighlight from "rehype-highlight"
 import rehypeSlug from "rehype-slug"
 import remarkGfm from "remark-gfm"
 import remarkToc from "remark-toc"
-import remarkMermaid from "remark-mermaidjs"
+// import remarkMermaid from "remark-mermaidjs"
 import "highlight.js/styles/github-dark.css"
 
 interface MarkdownViewProps {
@@ -18,7 +18,11 @@ export function MarkdownView({ content }: MarkdownViewProps) {
   return (
     <div className="prose prose-sm md:prose-base lg:prose-lg dark:prose-invert max-w-none">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkToc, remarkMermaid]}
+        remarkPlugins={[
+          remarkGfm,
+          // remarkMermaid,
+          [remarkToc, { heading: '目次', tight: true }],
+        ]}
         rehypePlugins={[rehypeHighlight, rehypeSlug]}
       >
         {content}
