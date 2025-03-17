@@ -1,0 +1,60 @@
+{
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "export": "Export",
+        "share": "Share",
+        "copyUrl": "Copy URL",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "close": "Close",
+        "confirm": "Confirm",
+        "loading": "Loading..."
+    },
+    "institution": {
+        "title": "Institution",
+        "name": "Name",
+        "description": "Description",
+        "details": "Details",
+        "commits": "Commits",
+        "history": "History",
+        "addNamedVersion": "Save with Name",
+        "testResults": "Test Results",
+        "parameters": "Parameters",
+        "revertToVersion": "Revert to this version",
+        "viewChanges": "View changes",
+        "compareWithCurrent": "Compare with current",
+        "addName": "Add name",
+        "namedVersions": "Named versions",
+        "unnamedVersions": "Unnamed versions",
+        "allVersions": "All versions",
+        "noVersionsFound": "No versions found matching the filter",
+        "currentVersion": "Current",
+        "namedVersion": "Named",
+        "versionManagement": "Version Management",
+        "versionName": "Version name",
+        "versionDescription": "Description (optional)",
+        "saveWithName": "Save with name",
+        "sampleInstitutionWarning": "This is a sample institution. Your edits will not be saved. Create your own institution by clicking the '+' button in the sidebar.",
+        "deleteConfirmation": "Delete institution?",
+        "deleteWarning": "This action cannot be undone. The institution and all its data will be permanently deleted.",
+        "revertConfirmation": "Revert to this version?",
+        "revertWarning": "Current edits will be discarded and reverted to the selected version. This action cannot be undone."
+    },
+    "backend": {
+        "connectionError": "Cannot connect to OpenFisca backend",
+        "connectionErrorDetails": "The backend service may not be running. Start the OpenFisca backend to see actual test results.",
+        "startCommand": "uvicorn server:app --reload"
+    },
+    "test": {
+        "testPassed": "Test passed",
+        "testFailed": "Test failed",
+        "backendNotConnected": "Backend not connected",
+        "passed": "Passed",
+        "failed": "Failed",
+        "total": "Total"
+    }
+}

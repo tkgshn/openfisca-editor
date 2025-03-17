@@ -1,0 +1,60 @@
+{
+    "common": {
+        "save": "保存",
+        "cancel": "キャンセル",
+        "delete": "削除",
+        "edit": "編集",
+        "export": "エクスポート",
+        "share": "公開",
+        "copyUrl": "URLをコピー",
+        "back": "戻る",
+        "next": "次へ",
+        "previous": "前へ",
+        "close": "閉じる",
+        "confirm": "確認",
+        "loading": "読み込み中..."
+    },
+    "institution": {
+        "title": "制度",
+        "name": "名前",
+        "description": "説明",
+        "details": "詳細",
+        "commits": "コミット",
+        "history": "履歴",
+        "addNamedVersion": "名前をつけて保存",
+        "testResults": "テスト結果",
+        "parameters": "パラメータ",
+        "revertToVersion": "このバージョンに戻す",
+        "viewChanges": "変更内容を表示",
+        "compareWithCurrent": "現在と比較",
+        "addName": "名前を付ける",
+        "namedVersions": "名前付きのみ",
+        "unnamedVersions": "名前なしのみ",
+        "allVersions": "すべて",
+        "noVersionsFound": "フィルター条件に一致する変更履歴がありません",
+        "currentVersion": "現在",
+        "namedVersion": "名前付き",
+        "versionManagement": "バージョン管理",
+        "versionName": "バージョン名",
+        "versionDescription": "説明（任意）",
+        "saveWithName": "名前を付けて保存",
+        "sampleInstitutionWarning": "これはサンプル制度です。編集内容は保存されません。独自の制度を作成するには、サイドバーの「+」ボタンをクリックしてください。",
+        "deleteConfirmation": "制度を削除しますか？",
+        "deleteWarning": "この操作は元に戻せません。制度とそのすべてのデータが完全に削除されます。",
+        "revertConfirmation": "このバージョンに戻しますか？",
+        "revertWarning": "現在の編集内容は破棄され、選択したバージョンに戻ります。この操作は元に戻せません。"
+    },
+    "backend": {
+        "connectionError": "OpenFiscaバックエンドに接続できません",
+        "connectionErrorDetails": "バックエンドサービスが実行されていないようです。実際のテスト結果を表示するには、OpenFiscaバックエンドを起動してください。",
+        "startCommand": "uvicorn server:app --reload"
+    },
+    "test": {
+        "testPassed": "テスト成功",
+        "testFailed": "テスト失敗",
+        "backendNotConnected": "バックエンド未接続",
+        "passed": "成功",
+        "failed": "失敗",
+        "total": "合計"
+    }
+}

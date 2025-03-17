@@ -1,0 +1,60 @@
+{
+    "common": {
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "export": "Exporter",
+        "share": "Partager",
+        "copyUrl": "Copier l'URL",
+        "back": "Retour",
+        "next": "Suivant",
+        "previous": "Précédent",
+        "close": "Fermer",
+        "confirm": "Confirmer",
+        "loading": "Chargement..."
+    },
+    "institution": {
+        "title": "Institution",
+        "name": "Nom",
+        "description": "Description",
+        "details": "Détails",
+        "commits": "Commits",
+        "history": "Historique",
+        "addNamedVersion": "Enregistrer avec un nom",
+        "testResults": "Résultats des tests",
+        "parameters": "Paramètres",
+        "revertToVersion": "Revenir à cette version",
+        "viewChanges": "Voir les modifications",
+        "compareWithCurrent": "Comparer avec la version actuelle",
+        "addName": "Ajouter un nom",
+        "namedVersions": "Versions nommées",
+        "unnamedVersions": "Versions sans nom",
+        "allVersions": "Toutes les versions",
+        "noVersionsFound": "Aucune version correspondant au filtre",
+        "currentVersion": "Actuelle",
+        "namedVersion": "Nommée",
+        "versionManagement": "Gestion des versions",
+        "versionName": "Nom de la version",
+        "versionDescription": "Description (facultative)",
+        "saveWithName": "Enregistrer avec un nom",
+        "sampleInstitutionWarning": "Ceci est une institution d'exemple. Vos modifications ne seront pas enregistrées. Créez votre propre institution en cliquant sur le bouton '+' dans la barre latérale.",
+        "deleteConfirmation": "Supprimer l'institution ?",
+        "deleteWarning": "Cette action ne peut pas être annulée. L'institution et toutes ses données seront définitivement supprimées.",
+        "revertConfirmation": "Revenir à cette version ?",
+        "revertWarning": "Les modifications actuelles seront abandonnées et vous reviendrez à la version sélectionnée. Cette action ne peut pas être annulée."
+    },
+    "backend": {
+        "connectionError": "Impossible de se connecter au backend OpenFisca",
+        "connectionErrorDetails": "Le service backend n'est peut-être pas en cours d'exécution. Démarrez le backend OpenFisca pour voir les résultats réels des tests.",
+        "startCommand": "uvicorn server:app --reload"
+    },
+    "test": {
+        "testPassed": "Test réussi",
+        "testFailed": "Test échoué",
+        "backendNotConnected": "Backend non connecté",
+        "passed": "Réussis",
+        "failed": "Échoués",
+        "total": "Total"
+    }
+}

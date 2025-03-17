@@ -1,3 +1,5 @@
+"use client"
+
 import dynamic from 'next/dynamic'
 
 // クライアントサイドでのみレンダリングするためにdynamicインポートを使用
@@ -15,4 +17,3 @@ const OpenFiscaEditor = dynamic(() => import('@/components/openfisca-editor'), {
 export default function Home() {
   return <OpenFiscaEditor />
 }
-
