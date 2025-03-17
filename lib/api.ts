@@ -1,5 +1,12 @@
 import type { Institution, Parameter, Version } from "./types"
 import { v4 as uuidv4 } from "uuid"
+import {
+  commitInstitutionToGit,
+  createReleaseTag,
+  createVersionFromCommit,
+  getInstitutionCommitHistory,
+  getCommitDiff
+} from "./git-api"
 
 const API_BASE_URL = "http://localhost:8000"
 const LOCAL_STORAGE_KEY = "openfisca-user-institutions"
@@ -885,7 +892,10 @@ class ${name}(Variable):
 }
 
 // 制度を更新
-export async function updateInstitution(institution: Institution): Promise<void> {
+export async function updateInstitution(
+  institution: Institution,
+  commitMessage: string = "制度の更新"
+): Promise<void> {
   if (institution.source === "sample") {
     // サンプル制度は更新できない（実際のアプリケーションでは警告を表示するなど）
     console.warn("サンプル制度は更新できません")
@@ -898,6 +908,25 @@ export async function updateInstitution(institution: Institution): Promise<void>
 
   if (index !== -1) {
     userInstitutions[index] = institution
+
+    // GitリポジトリにファイルをコミットしてコミットハッシュをGit機能が有効な場合のみ取得
+    let commitHash = null
+    try {
+      commitHash = await commitInstitutionToGit(institution, commitMessage)
+    } catch (gitError) {
+      console.warn("Git操作に失敗しました（ローカルストレージのみ更新します）:", gitError)
+    }
+
+    // バージョン情報を作成（Git機能が有効な場合のみ）
+    if (commitHash) {
+      const version = await createVersionFromCommit(institution, commitHash, commitMessage)
+      if (!institution.versions) {
+        institution.versions = []
+      }
+      institution.versions.push(version)
+      institution.currentVersion = version.id
+    }
+
     saveUserInstitutions(userInstitutions)
   }
 
@@ -1177,16 +1206,12 @@ export async function exportToOpenFisca(
         paramYaml += `  ${value.date}:\n`
         paramYaml += `    value: ${value.value}\n`
 
-        if (value.label || value.description) {
-          paramYaml += `    metadata:\n`
+        if (value.label) {
+          paramYaml += `      label: '${value.label}'\n`
+        }
 
-          if (value.label) {
-            paramYaml += `      label: '${value.label}'\n`
-          }
-
-          if (value.description) {
-            paramYaml += `      description: '${value.description}'\n`
-          }
+        if (value.description) {
+          paramYaml += `      description: '${value.description}'\n`
         }
       })
 
@@ -1235,6 +1260,16 @@ export async function createVersion(
     changes,
   }
 
+  // 実際のGitコミットを行う
+  try {
+    const commitHash = await commitInstitutionToGit(institution, message)
+    if (commitHash) {
+      version.commitHash = commitHash
+    }
+  } catch (error) {
+    console.error("Failed to commit to Git:", error)
+  }
+
   // Run tests for the new version
   const testResults = await runTest(institution.id, institution.testYamlRaw || "")
   version.testResults = {
@@ -1269,6 +1304,19 @@ export async function revertToVersion(institution: Institution, versionId: strin
   await updateInstitution(updatedInstitution)
 
   return updatedInstitution
+}
+
+export async function getVersionHistory(institution: Institution): Promise<any[]> {
+  return await getInstitutionCommitHistory(institution)
+}
+
+export async function getCommitDetails(commitHash: string): Promise<string> {
+  try {
+    return await getCommitDiff(commitHash)
+  } catch (error) {
+    console.error("Failed to get commit details:", error)
+    return ""
+  }
 }
 
 function generateId() {
@@ -1317,4 +1365,3 @@ export async function fetchInstitutionById(id: string): Promise<any> {
     }, 500)
   })
 }
-
