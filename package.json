@@ -83,6 +83,7 @@
     "remark-gfm": "^4.0.1",
     "remark-mermaidjs": "^7.0.0",
     "remark-toc": "^9.0.0",
+    "simple-git": "^3.27.0",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
