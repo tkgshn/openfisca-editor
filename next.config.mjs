@@ -21,6 +21,21 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  output: 'standalone',
+
+  // ドキュメントページを静的生成から除外
+  excludeDefaultMomentLocales: true,
+
+  // mermaidに関する警告を抑制
+  webpack: (config) => {
+    // mermaid関連のモジュールを無視
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'mermaid-isomorphic': false,
+      'remark-mermaidjs': false
+    };
+    return config;
+  }
 }
 
 mergeConfig(nextConfig, userConfig)
