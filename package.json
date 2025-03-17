@@ -60,7 +60,7 @@
     "cmdk": "1.0.4",
     "codemirror": "latest",
     "d3": "latest",
-    "date-fns": "4.1.0",
+    "date-fns": "^2.28.0",
     "embla-carousel-react": "8.5.1",
     "highlight.js": "^11.11.1",
     "input-otp": "1.4.1",
