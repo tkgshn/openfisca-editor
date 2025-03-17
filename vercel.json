@@ -35,5 +35,10 @@
   ],
   "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "env": {
+    "NEXT_PUBLIC_DEMO_MODE": "true",
+    "NEXT_PUBLIC_APP_URL": "https://openfisca-editor.vercel.app",
+    "NODE_VERSION": "18.x"
+  }
 }
