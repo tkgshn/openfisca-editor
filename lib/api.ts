@@ -1,12 +1,13 @@
 import type { Institution, Parameter, Version } from "./types"
 import { v4 as uuidv4 } from "uuid"
-import {
-  commitInstitutionToGit,
-  createReleaseTag,
-  createVersionFromCommit,
-  getInstitutionCommitHistory,
-  getCommitDiff
-} from "./git-api"
+// Git関連の機能はデモモードでは使用しないためコメントアウト
+// import {
+//   commitInstitutionToGit,
+//   createReleaseTag,
+//   createVersionFromCommit,
+//   getInstitutionCommitHistory,
+//   getCommitDiff
+// } from "./git-api"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 const LOCAL_STORAGE_KEY = "openfisca-user-institutions"
@@ -958,7 +959,7 @@ export async function deleteInstitution(institutionId: string): Promise<void> {
 export async function runTest(institutionId: string, yamlContent: string, signal?: AbortSignal): Promise<any> {
   // デモモードかどうかをチェック
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-  
+
   if (isDemoMode) {
     // デモモードではモックデータを返す
     console.log("Demo mode: Using mock test results");
@@ -978,7 +979,7 @@ export async function runTest(institutionId: string, yamlContent: string, signal
       demoMode: true
     };
   }
-  
+
   try {
     // Try to connect to the local backend with timeout
     const controller = signal ? undefined : new AbortController();
@@ -1276,44 +1277,36 @@ export async function createVersion(
   message: string,
   changes: { before: Partial<Institution>; after: Partial<Institution> },
 ): Promise<Version> {
-  // 新しいバージョン情報を作成
-  const version: Version = {
-    id: generateId(),
-    timestamp: new Date().toISOString(),
-    message,
-    changes,
+  // デモモードではダミーデータを返す
+  if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+    const newVersion: Version = {
+      id: uuidv4(),
+      timestamp: new Date().toISOString(),
+      message,
+      changes,
+    }
+    return newVersion
   }
 
   try {
-    // GitコミットしてコミットハッシュをGit機能が有効な場合のみ取得
-    try {
-      const commitHash = await commitInstitutionToGit(institution, message)
-      if (commitHash) {
-        version.commitHash = commitHash
-      }
-    } catch (gitError) {
-      console.warn("Git操作に失敗しました:", gitError)
-    }
+    // 実際のGitコミットはコメントアウト
+    // const commitHash = await commitInstitutionToGit(institution, message)
+    // if (!commitHash) return null
 
-    // テスト実行
-    const testResults = await runTest(institution.id, institution.testYamlRaw || "")
-    version.testResults = {
-      success: testResults.returncode === 0,
+    // const version = await createVersionFromCommit(institution.id, commitHash, message, previousVersion)
+    // return version
+
+    const newVersion: Version = {
+      id: uuidv4(),
       timestamp: new Date().toISOString(),
-      duration: testResults.duration || 0,
-      details: {
-        passed: testResults.passed || 0,
-        failed: testResults.failed || 0,
-        total: (testResults.passed || 0) + (testResults.failed || 0),
-        errors: testResults.stderr ? [testResults.stderr] : undefined,
-      },
+      message,
+      changes,
     }
 
-    return version
+    return newVersion
   } catch (error) {
-    console.error("バージョン作成中にエラーが発生しました:", error)
-    // エラーが発生してもバージョン情報は返す
-    return version
+    console.error("Failed to create version:", error)
+    return null
   }
 }
 
@@ -1364,7 +1357,7 @@ export async function getCommitDetails(commitHash: string): Promise<string> {
 export async function runSimulation(institutionId: string, params: any): Promise<any> {
   // デモモードかどうかをチェック
   const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-  
+
   if (isDemoMode) {
     // デモモードの場合は、サンプルデータを返す
     console.log("Demo mode: Using client-side simulation");
@@ -1372,10 +1365,10 @@ export async function runSimulation(institutionId: string, params: any): Promise
       // import関数は非同期のため、dynamicなimportを行う
       const simulationHelpers = await import('./simulation-helpers');
       const fallbackData = simulationHelpers.generateFallbackSimulationData(
-        institutionId === 'sample-1' ? '児童手当' : 
-        institutionId === 'sample-2' ? '特別児童扶養手当' : 
-        institutionId === 'sample-3' ? '3の倍数給付金' : 
-        institutionId === 'sample-4' ? '子育て助成金' : '一般制度',
+        institutionId === 'sample-1' ? '児童手当' :
+          institutionId === 'sample-2' ? '特別児童扶養手当' :
+            institutionId === 'sample-3' ? '3の倍数給付金' :
+              institutionId === 'sample-4' ? '子育て助成金' : '一般制度',
         params
       );
       return fallbackData;
@@ -1384,7 +1377,7 @@ export async function runSimulation(institutionId: string, params: any): Promise
       throw error;
     }
   }
-  
+
   try {
     // Try to connect to the local backend with timeout
     const controller = new AbortController();
@@ -1410,7 +1403,7 @@ export async function runSimulation(institutionId: string, params: any): Promise
       return data
     } catch (fetchError) {
       console.error("Simulation API error:", fetchError)
-      
+
       // API接続エラーの場合はクライアントサイドのシミュレーションを実行
       console.log("Falling back to client-side simulation");
       try {
@@ -1452,4 +1445,105 @@ export async function fetchInstitutionById(id: string): Promise<any> {
       resolve(mockInstitution)
     }, 500)
   })
+}
+
+// 制度のバージョン履歴を取得
+export async function getVersionHistory(institutionId: string): Promise<Version[]> {
+  // デモモードではダミーデータを返す
+  if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+    return []
+  }
+
+  try {
+    // 実際のGit履歴取得はコメントアウト
+    // const history = await getInstitutionCommitHistory(institutionId)
+    // return history
+    return []
+  } catch (error) {
+    console.error("Failed to get version history:", error)
+    return []
+  }
+}
+
+// 制度をリリース（タグ付け）
+export async function releaseInstitution(
+  institution: Institution,
+  version: string,
+  notes: string
+): Promise<boolean> {
+  // デモモードでは成功を返す
+  if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+    return true
+  }
+
+  try {
+    // 実際のGitタグ付けはコメントアウト
+    // await createReleaseTag(institution.id, version, notes)
+
+    // タグ情報を制度に追加
+    // const updatedInstitution = {
+    //   ...institution,
+    //   tags: [...(institution.tags || []), { version, notes, date: new Date().toISOString() }],
+    // }
+
+    // 更新した制度を保存
+    // await updateInstitution(updatedInstitution)
+
+    return true
+  } catch (error) {
+    console.error("Failed to release institution:", error)
+    return false
+  }
+}
+
+// 制度をGitにコミット
+export async function commitInstitutionChanges(
+  institution: Institution,
+  message: string
+): Promise<Version | null> {
+  // デモモードではダミーデータを返す
+  if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+    const newVersion: Version = {
+      id: uuidv4(),
+      timestamp: new Date().toISOString(),
+      message,
+      changes: {
+        before: {},
+        after: {},
+      }
+    }
+    return newVersion
+  }
+
+  try {
+    // 実際のGitコミットはコメントアウト
+    // const commitHash = await commitInstitutionToGit(institution, message)
+    // if (!commitHash) return null
+
+    // const version: Version = {
+    //   id: uuidv4(),
+    //   commitHash,
+    //   timestamp: new Date().toISOString(),
+    //   message,
+    //   changes: {
+    //     before: {},
+    //     after: {},
+    //   }
+    // }
+
+    const newVersion: Version = {
+      id: uuidv4(),
+      timestamp: new Date().toISOString(),
+      message,
+      changes: {
+        before: {},
+        after: {},
+      }
+    }
+
+    return newVersion
+  } catch (error) {
+    console.error("Failed to commit institution changes:", error)
+    return null
+  }
 }
