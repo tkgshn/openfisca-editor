@@ -2,6 +2,8 @@
 
 import { MarkdownFileView } from "@/components/markdown-view"
 
+export const dynamic = 'force-dynamic';
+
 export default function InstallationPage() {
   return (
     <div className="max-w-3xl mx-auto">
