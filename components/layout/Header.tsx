@@ -2,6 +2,8 @@ import type React from "react"
 import Link from "next/link"
 import { useTest } from "@/contexts/test-context"
 import { CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { useI18n } from "@/lib/i18n"
 
 interface HeaderProps {
   title: string
@@ -15,6 +17,7 @@ interface HeaderProps {
  */
 const Header: React.FC<HeaderProps> = ({ title }) => {
   const { isRunning: isLoading, results } = useTest()
+  const { t } = useI18n()
 
   // テスト状態を生成
   const testStatus = {
@@ -36,11 +39,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           {isLoading ? (
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-sm">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>テスト実行中...</span>
+              <span>{t.testCase.running}</span>
             </div>
           ) : testStatus.total > 0 ? (
             <div
@@ -52,11 +55,12 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
             >
               {testStatus.isSuccess ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
               <span>
-                {testStatus.passed}/{testStatus.total} テスト
-                {testStatus.isSuccess ? "成功" : "失敗"}
+                {testStatus.passed}/{testStatus.total} {t.testCase.tests}
+                {testStatus.isSuccess ? t.testCase.success : t.testCase.failed}
               </span>
             </div>
           ) : null}
+          <LanguageSwitcher />
         </div>
       </div>
     </header>

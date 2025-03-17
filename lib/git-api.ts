@@ -5,16 +5,30 @@ import { v4 as uuidv4 } from 'uuid';
 const isServer = typeof window === 'undefined';
 
 // サーバーサイドでのみ使用する変数
-let git;
+// 型定義をany型として明示的に定義
+let git: any = null;
+
+// dynamic importを防ぐために変数宣言と型定義
+type SimpleGitType = any;
+type FSType = any;
+type PathType = any;
+
+let simpleGit: SimpleGitType = null;
+let fs: FSType = null;
+let path: PathType = null;
 
 // サーバーサイドでのみ実行される初期化関数
 async function initGitOnServer() {
     if (!isServer) return;
 
     try {
-        const { simpleGit } = await import('simple-git');
-        const fs = await import('fs');
-        const path = await import('path');
+        // クライアントサイドでのimport防止のため条件付きで実行
+        if (isServer) {
+            const simpleGitModule = await import('simple-git');
+            simpleGit = simpleGitModule.simpleGit;
+            fs = await import('fs');
+            path = await import('path');
+        }
 
         // GitリポジトリのルートディレクトリのPath
         const REPO_PATH = process.env.NEXT_PUBLIC_GIT_REPO_PATH || './data';
@@ -186,7 +200,7 @@ export async function getInstitutionCommitHistory(institution: Institution): Pro
         // ファイルのコミット履歴を取得
         const log = await git.log({ file: institutionPath });
 
-        return log.all.map(commit => ({
+        return log.all.map((commit: any) => ({
             hash: commit.hash,
             date: commit.date,
             message: commit.message,

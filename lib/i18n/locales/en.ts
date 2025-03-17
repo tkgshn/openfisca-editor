@@ -62,6 +62,10 @@ export const en = {
     notEligible: "Not Eligible",
     amount: "Amount",
     yen: "JPY",
+    running: "Running tests...",
+    tests: "tests",
+    success: " passed",
+    failed: " failed"
   },
   parameter: {
     title: "Parameters",

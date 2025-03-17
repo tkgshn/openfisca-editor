@@ -1,12 +1,24 @@
 import type { Institution, Parameter, Version } from "./types"
 import { v4 as uuidv4 } from "uuid"
-import {
-  commitInstitutionToGit,
-  createReleaseTag,
-  createVersionFromCommit,
-  getInstitutionCommitHistory,
-  getCommitDiff
-} from "./git-api"
+
+// クライアントサイドでのみインポートするために、dynamic importを使用
+// 型定義を明示的に宣言
+let commitInstitutionToGit: (institution: Institution, message: string) => Promise<string | null> = async () => null;
+let createReleaseTag: any = async () => '';
+let createVersionFromCommit: (institution: Institution, commitHash: string, message: string) => Promise<any> = async () => ({});
+let getInstitutionCommitHistory: (institution: Institution) => Promise<any[]> = async () => [];
+let getCommitDiff: (commitHash: string) => Promise<string> = async () => '';
+
+// クライアントサイドで実行されるコードを条件付きで呼び出し
+if (typeof window !== 'undefined') {
+  import("./git-api").then((module) => {
+    commitInstitutionToGit = module.commitInstitutionToGit;
+    createReleaseTag = module.createReleaseTag;
+    createVersionFromCommit = module.createVersionFromCommit;
+    getInstitutionCommitHistory = module.getInstitutionCommitHistory;
+    getCommitDiff = module.getCommitDiff;
+  });
+}
 
 const API_BASE_URL = "http://localhost:8000"
 const LOCAL_STORAGE_KEY = "openfisca-user-institutions"

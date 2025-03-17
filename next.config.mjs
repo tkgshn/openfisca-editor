@@ -35,6 +35,17 @@ const nextConfig = {
       'remark-mermaidjs': false
     };
 
+    // simple-gitパッケージをエクスターナル化（バンドルから除外）
+    if (!isServer) {
+      config.externals = [
+        ...(config.externals || []),
+        'simple-git',
+        'fs',
+        'path',
+        'simple-git/promise',
+      ];
+    }
+
     // クライアントサイドでNode.jsモジュールを使用しないようにする
     if (!isServer) {
       config.resolve.fallback = {
@@ -45,6 +56,21 @@ const nextConfig = {
         crypto: false,
         stream: false,
         buffer: false,
+        events: false,
+        'node:events': false,
+        'node:fs': false,
+        'node:path': false,
+        'node:os': false,
+        'node:crypto': false,
+        'node:stream': false,
+        'node:buffer': false,
+        'node:util': false,
+        'node:url': false,
+        'node:string_decoder': false,
+        'node:querystring': false,
+        'node:punycode': false,
+        'node:process': false,
+        'node:zlib': false,
       };
     }
 

@@ -62,6 +62,10 @@ export const ja = {
     notEligible: "受け取れない",
     amount: "金額",
     yen: "円",
+    running: "テスト実行中...",
+    tests: "テスト",
+    success: "成功",
+    failed: "失敗"
   },
   parameter: {
     title: "パラメータ",

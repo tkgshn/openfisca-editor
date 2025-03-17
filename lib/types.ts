@@ -51,6 +51,7 @@ export interface Version {
     before: Partial<Institution>
     after: Partial<Institution>
   }
+  commitHash?: string  // GitコミットのハッシュID
   testResults?: TestResults
 }
 
@@ -65,4 +66,3 @@ export interface TestResults {
     errors?: string[]
   }
 }
-
