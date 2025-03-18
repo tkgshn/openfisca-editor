@@ -1,163 +1,183 @@
-# OpenFisca Editor のための Cline ルール
+# OpenFisca Editor のための cline ルール
 
-このファイルは、OpenFisca Editor プロジェクトにおける重要なパターン、プロジェクト構造、ベストプラクティスなどをClineに理解させるためのものです。
+このファイルは、OpenFisca Editor プロジェクトにおけるUIコンポーネントの一貫性、デザインパターン、レイアウトルールなどを定義するものです。
 
-## プロジェクトの概要
+## カードコンポーネントのルール
 
-OpenFisca Editor は、社会保障制度のシミュレーションと可視化を行うためのウェブアプリケーションです。ユーザーは制度の定義、パラメータの設定、テストケースの作成、シミュレーションの実行などを行うことができます。
-
-## 技術スタック
-
-- **フロントエンド**: Next.js（React）、TypeScript
-- **スタイリング**: Tailwind CSS、shadcn/ui コンポーネント
-- **状態管理**: React Context API
-- **データ保存**: ローカルストレージ（クライアントサイド）
-- **バックエンド接続**: OpenFisca API（オプション）
-- **国際化**: i18n（日本語、英語、フランス語対応）
-
-## コンポーネント構成のルール
-
-1. **コンポーネントの分類**:
-   - `ui`: 汎用的なコンポーネント
-   - `editor`: コードエディタ関連のコンポーネント
-   - `institution`: 制度関連のコンポーネント
-   - `test`: テスト関連のコンポーネント
-   - `visualization`: 可視化関連のコンポーネント（MermaidPanel、シミュレーション可視化を含む）
-   - `simulation`: シミュレーション関連のコンポーネント
-   - `layout`: レイアウト関連のコンポーネント
-   - `shared`: 共有コンポーネント
-
-2. **命名規則**:
-   - コンポーネントファイル: PascalCase
-   - ユーティリティ関数: camelCase
-   - 定数: SNAKE_CASE
-   - TypeScript の型: PascalCase
-
-3. **インポート順序**:
-   - React/Next.js の組み込みモジュール
-   - サードパーティライブラリ
-   - プロジェクト内のコンポーネント
-   - プロジェクト内のユーティリティ関数
-   - プロジェクト内の型定義
-
-## データフロー
-
-1. **制度データの流れ**:
-   - ユーザーが制度を選択/作成 → 制度データがコンポーネントに流れる → 各パネル（コードエディタ、テストケース、パラメータなど）が更新される
-
-2. **更新の流れ**:
-   - ユーザーが編集 → handleInstitutionUpdate関数を通じて制度データが更新される → 更新されたデータがローカルストレージに保存される
-
-3. **テスト実行の流れ**:
-   - ユーザーがテスト実行 → TestContextを通じてテスト実行状態が管理される → テスト結果が表示される
-
-4. **シミュレーションの流れ**:
-   - パラメータの設定 → シミュレーション実行 → 結果の3D可視化
-
-## コンポーネントの責務
-
-1. **OpenFiscaEditor**: アプリケーションのメインコンポーネント。制度の管理と表示を担当。
-
-2. **InstitutionDetails**: 選択された制度の詳細情報を表示・編集するコンポーネント。
-
-3. **TestCasePanel**: 制度のテストケースを管理するコンポーネント。
-
-4. **CodeEditorPanel**: OpenFisca のコードを編集するコンポーネント。
-
-5. **SimulationPanel**: シミュレーションを実行し、結果を3D可視化するコンポーネント。Plotly.jsを使用。
-
-6. **MermaidPanel**: 制度のフローチャートを表示するコンポーネント。
-
-## 開発時の注意点
-
-1. **制度データの更新**:
-   - 制度データを更新する際は必ず handleInstitutionUpdate 関数を使用する
-   - サンプル制度（source: "sample"）は更新できない
-
-2. **テスト実行**:
-   - バックエンドが利用できない場合はモックデータが返される
-   - サンプル制度のテストは常に成功する
-
-3. **ローカライズ**:
-   - 日本語、英語、フランス語に対応（lib/i18n/）
-   - デフォルト言語は日本語
-
-4. **パフォーマンス**:
-   - 大量のデータを扱う場合はメモ化を活用する
-   - 不要な再レンダリングを避けるため、状態を適切に管理する
-
-5. **アクセシビリティ**:
-   - すべてのインタラクティブな要素にはキーボードアクセスを提供する
-   - 適切なARIA属性を使用する
-
-6. **シミュレーション**:
-   - 特定の制度（子育て助成金、3の倍数給付金など）には専用のシミュレーションロジックがある
-   - Plotly.jsを用いた3D可視化が実装されている
-
-## よく使用されるパターン
-
-1. **制度の選択と表示**:
-   ```typescript
-   const handleInstitutionSelect = (index: number) => {
-     setSelectedInstitutionIndex(index);
-     setSelectedInstitution(institutions[index]);
-   };
+1. **基本レイアウト**:
+   ```tsx
+   <Card className="shadow-sm hover:shadow transition-shadow duration-200">
+     <CardHeader className="flex flex-row items-center justify-between pb-2">
+       <CardTitle className="flex items-center gap-2">
+         <Icon className="h-5 w-5" />
+         タイトル
+       </CardTitle>
+       <ActionButtons />
+     </CardHeader>
+     <CardContent>
+       {/* コンテンツ */}
+     </CardContent>
+   </Card>
    ```
 
-2. **制度の更新**:
-   ```typescript
-   const handleInstitutionUpdate = async (updatedInstitution: Institution) => {
-     const updatedInstitutions = institutions.map((institution) =>
-       institution.id === updatedInstitution.id ? updatedInstitution : institution,
-     );
-     setInstitutions(updatedInstitutions);
-     setSelectedInstitution(updatedInstitution);
-   };
+2. **アクションボタンの配置**:
+   - プライマリアクションは常にカードヘッダーの右側に配置
+   - 複数のアクションがある場合は水平に並べる
+   - ボタンサイズは `size="sm"` を使用
+
+3. **アイコンの使用**:
+   - タイトル横のアイコンサイズ: h-5 w-5
+   - ボタン内のアイコンサイズ: h-4 w-4
+   - アイコンとテキストの間隔: gap-2
+
+## スペーシングとマージン
+
+1. **カード内部**:
+   - ヘッダーの下部パディング: pb-2
+   - コンテンツ間の間隔: space-y-4
+   - グリッドギャップ: gap-4
+
+2. **フォーム要素**:
+   - ラベルとインプット間: space-y-2
+   - フォームグループ間: space-y-4
+   - 2カラムレイアウト: grid grid-cols-1 md:grid-cols-2 gap-4
+
+## アニメーションとトランジション
+
+1. **ホバーエフェクト**:
+   ```tsx
+   className="hover:shadow transition-shadow duration-200"
    ```
 
-3. **テストの実行**:
-   ```typescript
-   const runTests = async (institutionId: string) => {
-     setIsLoading(true);
-     try {
-       const results = await runTest(institutionId);
-       setTestResults(results);
-     } catch (err) {
-       setError(`Failed to run tests: ${err}`);
-     } finally {
-       setIsLoading(false);
-     }
-   };
+2. **スライドアニメーション**:
+   ```tsx
+   className="animate-slide-in"
    ```
 
-## OpenFisca のルール
+## レスポンシブデザイン
 
-1. **変数名の制約**:
-   - 数字始まりのクラス名は使用できない（漢数字を使用する）
-   - 日本語は使用可能だが、クラス名としての制約を守る必要がある
+1. **ブレークポイント**:
+   - モバイル: デフォルト（1カラム）
+   - タブレット: md (768px)
+   - デスクトップ: lg (1024px)
 
-2. **エンティティと期間**:
-   - エンティティは 世帯、人物 などがある
-   - 期間は DAY, MONTH, YEAR, ETERNITY がある
+2. **グリッドレイアウト**:
+   ```tsx
+   className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+   ```
 
-3. **テストケースの書き方**:
-   - テストケースは YAML 形式で記述
-   - 入力と期待される出力を定義する
+## フォームコントロール
 
-## プロジェクトの今後の方向性
+1. **入力フィールド**:
+   - ラベルは必須
+   - エラー状態の表示
+   - ヘルプテキストは text-xs text-muted-foreground
 
-1. **コンポーネントの整理**:
-   - 重複コンポーネントの統合（visualization/と simulation/の間でコンポーネント分類を整理）
-   - 責務の明確化
+2. **ボタン**:
+   - プライマリーアクション: デフォルトスタイル
+   - セカンダリーアクション: variant="outline"
+   - アイコンボタン: size="icon"
 
-2. **バックエンド連携の強化**:
-   - OpenFisca API との連携強化
-   - データの永続化
+## タブナビゲーション
 
-3. **UI/UX の改善**:
-   - より直感的なインターフェース
-   - ビジュアライゼーションの強化
+1. **タブの構造**:
+   ```tsx
+   <Tabs defaultValue="tab1" className="w-full">
+     <TabsList className="mb-4">
+       <TabsTrigger value="tab1" className="flex items-center gap-1">
+         <Icon className="h-4 w-4" />
+         <span>タブ1</span>
+       </TabsTrigger>
+     </TabsList>
+     <TabsContent value="tab1" className="space-y-4 animate-slide-in">
+       {/* コンテンツ */}
+     </TabsContent>
+   </Tabs>
+   ```
 
-4. **テスト機能の強化**:
-   - より詳細なテスト結果
-   - バッチテスト
+## シミュレーションパネル
+
+1. **パラメータ表示**:
+   - スライダーと数値を横に配置
+   - 単位表示は font-mono を使用
+   - ヘルプテキストは下部に配置
+
+2. **結果表示**:
+   - 3カラムグリッドでメトリクスを表示
+   - グラフは固定高さ（h-[400px]）
+   - ローディング状態の表示
+
+## アクセシビリティ
+
+1. **フォーカス管理**:
+   - すべてのインタラクティブ要素にフォーカスインジケータ
+   - キーボードナビゲーション対応
+
+2. **ARIA属性**:
+   - 適切なラベリング
+   - 状態の通知
+   - エラーメッセージの関連付け
+
+## エラー処理
+
+1. **表示方法**:
+   - インライン表示
+   - エラーメッセージは赤色で表示
+   - ユーザーフレンドリーなメッセージ
+
+## ローディング状態
+
+1. **表示方法**:
+   - スケルトンローディング
+   - スピナー
+   - 操作不可の表示
+
+## カラーパレット
+
+1. **基本カラー**:
+   - プライマリ: Tailwindのデフォルト
+   - アクセント: 制度に応じて
+   - エラー: red-600
+   - 成功: green-600
+
+## アイコン
+
+1. **使用ルール**:
+   - Lucide アイコンを使用
+   - サイズの統一
+   - 意味のある使用
+
+## ブランチ戦略
+
+1. **ブランチ構成**:
+   - `main`: メインブランチ（本番環境用）
+   - `develop`: 開発用ブランチ（新機能の統合先）
+   - `release/*`: リリースブランチ（バージョンリリース用）
+   - `feature/*`: 機能開発ブランチ
+
+2. **ブランチ命名規則**:
+   - 機能ブランチ: `feature/機能名`（例：`feature/i18n`）
+   - リリースブランチ: `release/バージョン`（例：`release/v1.0.0`）
+   - バグ修正ブランチ: `fix/修正内容`（例：`fix/login-error`）
+
+3. **ワークフロー**:
+   - 新機能開発は`feature/*`ブランチで行う
+   - 開発完了後は`develop`ブランチにマージ
+   - リリース準備は`release/*`ブランチで行う
+   - 安定版は`main`ブランチにマージ
+
+4. **コミットメッセージ**:
+   - 機能追加: `feat: 機能の説明`
+   - バグ修正: `fix: 修正内容の説明`
+   - リファクタリング: `refactor: 変更内容の説明`
+   - ドキュメント: `docs: ドキュメントの説明`
+   - スタイル: `style: スタイルの変更内容`
+   - テスト: `test: テストの追加・修正`
+   - その他: `chore: その他の変更`
+
+5. **作業完了時のコミットルール**:
+   - 各作業が完了したら、その時点でコミットする
+   - コミットメッセージは作業内容を明確に説明する
+   - 関連する変更は1つのコミットにまとめる
+   - コミット後は即座にリモートにプッシュする
+   - プッシュ後は作業ブランチの状態を確認する
