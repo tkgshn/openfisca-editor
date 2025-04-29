@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useI18n } from "@/lib/i18n"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -48,6 +49,7 @@ export function InstitutionHeader({
   onCopyUrl,
   testResults,
 }: InstitutionHeaderProps) {
+  const { t } = useI18n()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isRevertDialogOpen, setIsRevertDialogOpen] = useState(false)
   const [selectedVersion, setSelectedVersion] = useState<Version | null>(null)
@@ -122,8 +124,8 @@ export function InstitutionHeader({
                 {displayTestResults.returncode === 0
                   ? `${displayTestResults.passed || 0}/${displayTestResults.total || institution.testCases?.length || 0}`
                   : isBackendError
-                    ? "バックエンド未接続"
-                    : "テスト失敗"}
+                    ? t.test.backendDisconnected
+                    : t.test.testFailed}
               </Badge>
             )}
           </div>
@@ -136,7 +138,7 @@ export function InstitutionHeader({
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="flex items-center gap-1.5">
                   <History className="h-3.5 w-3.5" />
-                  履歴
+                  {t.test.history}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[300px]">
@@ -170,17 +172,17 @@ export function InstitutionHeader({
 
           <Button variant="outline" size="sm" onClick={onShare} className="flex items-center gap-1.5">
             <Share2 className="h-3.5 w-3.5" />
-            公開
+            {t.test.publish}
           </Button>
 
           <Button variant="outline" size="sm" onClick={onExport} className="flex items-center gap-1.5">
             <Download className="h-3.5 w-3.5" />
-            エクスポート
+            {t.test.export}
           </Button>
 
           <Button variant="outline" size="sm" onClick={onCopyUrl} className="flex items-center gap-1.5">
             <Link2 className="h-3.5 w-3.5" />
-            URLをコピー
+            {t.test.copyUrl}
           </Button>
 
           {institution.source === "user" && (
@@ -191,7 +193,7 @@ export function InstitutionHeader({
               className="flex items-center gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/10"
             >
               <Trash2 className="h-3.5 w-3.5" />
-              削除
+              {t.test.delete}
             </Button>
           )}
         </div>
@@ -203,10 +205,10 @@ export function InstitutionHeader({
           <div className="flex items-start gap-2">
             <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="font-medium text-amber-600 text-sm">OpenFiscaバックエンドに接続できません</p>
+              <p className="font-medium text-amber-600 text-sm">{t.test.backendError}</p>
               <div className="mt-1 text-xs text-amber-600/90">
                 <p>
-                  バックエンドサービスが実行されていないようです。実際のテスト結果を表示するには、OpenFiscaバックエンドを起動してください。
+                  {t.test.backendErrorDesc}
                 </p>
                 <code className="text-xs bg-amber-500/10 p-1 rounded mt-1 block">uvicorn server:app --reload</code>
               </div>
@@ -219,7 +221,7 @@ export function InstitutionHeader({
       {institution.source === "sample" && (
         <div className="bg-muted/50 p-2 rounded-md text-xs text-muted-foreground mt-2 max-w-7xl mx-auto px-3">
           <p>
-            これはサンプル制度です。編集内容は保存されません。独自の制度を作成するには、サイドバーの「+」ボタンをクリックしてください。
+            {t.test.sampleWarning}
           </p>
         </div>
       )}
@@ -228,13 +230,13 @@ export function InstitutionHeader({
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>制度を削除しますか？</AlertDialogTitle>
+            <AlertDialogTitle>{t.test.deleteConfirm}</AlertDialogTitle>
             <AlertDialogDescription>
-              この操作は元に戻せません。制度とそのすべてのデータが完全に削除されます。
+              {t.test.deleteDesc}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>キャンセル</AlertDialogCancel>
+            <AlertDialogCancel>{t.common.cancel}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={() => {
@@ -242,7 +244,7 @@ export function InstitutionHeader({
                 setIsDeleteDialogOpen(false)
               }}
             >
-              削除
+              {t.test.delete}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -252,7 +254,7 @@ export function InstitutionHeader({
       <AlertDialog open={isRevertDialogOpen} onOpenChange={setIsRevertDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>このバージョンに戻しますか？</AlertDialogTitle>
+            <AlertDialogTitle>{t.test.revertConfirm}</AlertDialogTitle>
             <AlertDialogDescription>
               {selectedVersion && (
                 <>
@@ -262,12 +264,12 @@ export function InstitutionHeader({
                   </p>
                 </>
               )}
-              <p className="mt-4">現在の変更内容は失われます。この操作は元に戻せません。</p>
+              <p className="mt-4">{t.test.revertDesc}</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>キャンセル</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmRevert}>このバージョンに戻す</AlertDialogAction>
+            <AlertDialogCancel>{t.common.cancel}</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmRevert}>{t.test.revertAction}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

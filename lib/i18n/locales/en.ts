@@ -118,11 +118,20 @@ export const en = {
     generateFromCode: "Generate Flow from Code",
     generateFromConditions: "Generate Flow from Conditions",
     generating: "Generating...",
+    generatingFromCode: "Generating flowchart from OpenFisca code...",
+    generatingFromConditions: "Generating flowchart from conditions...",
+    generatingMermaid: "Generating Mermaid flow...",
+    generatingConditionsMermaid: "Generating flowchart from conditions...",
     codeTabDescription: "Click the 'Generate Flow from Code' button to generate a flowchart from the OpenFisca code.",
     conditionsTabDescription:
       "Click the 'Generate Flow from Conditions' button to generate a flowchart from the natural language conditions.",
     currentConditions: "Current conditions",
     notSet: "not set",
+    emptyCode: "OpenFisca code is empty.",
+    emptyConditions: "No conditions are set.",
+    renderingFailed: "Failed to render Mermaid diagram.",
+    generationFailed: "Failed to generate Mermaid notation.",
+    conditionsGenerationFailed: "Failed to generate Mermaid notation from conditions."
   },
   multiSelect: {
     itemsSelected: "institutions selected",
@@ -132,6 +141,23 @@ export const en = {
     deleteDescription:
       "This action cannot be undone. The selected institutions and all their data will be permanently deleted.",
     sampleWarning: "Note: Sample institutions cannot be deleted, so institutions will not be deleted.",
+  },
+  test: {
+    backendDisconnected: "Backend Disconnected",
+    testFailed: "Test Failed",
+    history: "History",
+    publish: "Publish",
+    export: "Export",
+    copyUrl: "Copy URL",
+    delete: "Delete",
+    backendError: "Cannot connect to OpenFisca backend",
+    backendErrorDesc: "The backend service may not be running. To see actual test results, please start the OpenFisca backend.",
+    sampleWarning: "This is a sample institution. Your edits will not be saved. To create your own institution, click the '+' button in the sidebar.",
+    deleteConfirm: "Delete this institution?",
+    deleteDesc: "This action cannot be undone. The institution and all its data will be permanently deleted.",
+    revertConfirm: "Revert to this version?",
+    revertDesc: "Current changes will be lost. This action cannot be undone.",
+    revertAction: "Revert to this version"
   },
   settings: {
     title: "Settings",

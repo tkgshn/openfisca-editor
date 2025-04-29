@@ -120,12 +120,21 @@ export const fr = {
     generateFromCode: "Générer un flux à partir du code",
     generateFromConditions: "Générer un flux à partir des conditions",
     generating: "Génération...",
+    generatingFromCode: "Génération d'un organigramme à partir du code OpenFisca...",
+    generatingFromConditions: "Génération d'un organigramme à partir des conditions...",
+    generatingMermaid: "Génération du flux Mermaid...",
+    generatingConditionsMermaid: "Génération d'un organigramme à partir des conditions...",
     codeTabDescription:
       "Cliquez sur le bouton 'Générer un flux à partir du code' pour générer un organigramme à partir du code OpenFisca.",
     conditionsTabDescription:
       "Cliquez sur le bouton 'Générer un flux à partir des conditions' pour générer un organigramme à partir des conditions en langage naturel.",
     currentConditions: "Conditions actuelles",
     notSet: "non défini",
+    emptyCode: "Le code OpenFisca est vide.",
+    emptyConditions: "Aucune condition n'est définie.",
+    renderingFailed: "Échec du rendu du diagramme Mermaid.",
+    generationFailed: "Échec de la génération de la notation Mermaid.",
+    conditionsGenerationFailed: "Échec de la génération de la notation Mermaid à partir des conditions."
   },
   multiSelect: {
     itemsSelected: "institutions sélectionnées",
@@ -136,6 +145,23 @@ export const fr = {
       "Cette action ne peut pas être annulée. Les institutions sélectionnées et toutes leurs données seront définitivement supprimées.",
     sampleWarning:
       "Remarque: Les institutions exemples ne peuvent pas être supprimées, donc institutions ne seront pas supprimées.",
+  },
+  test: {
+    backendDisconnected: "Backend déconnecté",
+    testFailed: "Test échoué",
+    history: "Historique",
+    publish: "Publier",
+    export: "Exporter",
+    copyUrl: "Copier l'URL",
+    delete: "Supprimer",
+    backendError: "Impossible de se connecter au backend OpenFisca",
+    backendErrorDesc: "Le service backend n'est peut-être pas en cours d'exécution. Pour voir les résultats de test réels, veuillez démarrer le backend OpenFisca.",
+    sampleWarning: "Ceci est une institution exemple. Vos modifications ne seront pas enregistrées. Pour créer votre propre institution, cliquez sur le bouton '+' dans la barre latérale.",
+    deleteConfirm: "Supprimer cette institution?",
+    deleteDesc: "Cette action ne peut pas être annulée. L'institution et toutes ses données seront définitivement supprimées.",
+    revertConfirm: "Revenir à cette version?",
+    revertDesc: "Les modifications actuelles seront perdues. Cette action ne peut pas être annulée.",
+    revertAction: "Revenir à cette version"
   },
   settings: {
     title: "Paramètres",

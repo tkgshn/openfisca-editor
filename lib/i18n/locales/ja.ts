@@ -92,6 +92,39 @@ export const ja = {
     grandparent_list: "祖父母一覧",
     child_list: "子一覧"
   },
+  test: {
+    backendDisconnected: "バックエンド未接続",
+    testFailed: "テスト失敗",
+    history: "履歴",
+    publish: "公開",
+    export: "エクスポート",
+    copyUrl: "URLをコピー",
+    delete: "削除",
+    backendError: "OpenFiscaバックエンドに接続できません",
+    backendErrorDesc: "バックエンドサービスが実行されていないようです。実際のテスト結果を表示するには、OpenFiscaバックエンドを起動してください。",
+    sampleWarning: "これはサンプル制度です。編集内容は保存されません。独自の制度を作成するには、サイドバーの「+」ボタンをクリックしてください。",
+    deleteConfirm: "制度を削除しますか？",
+    deleteDesc: "この操作は元に戻せません。制度とそのすべてのデータが完全に削除されます。",
+    revertConfirm: "このバージョンに戻しますか？",
+    revertDesc: "現在の変更内容は失われます。この操作は元に戻せません。",
+    revertAction: "このバージョンに戻す"
+  },
+  flowchart: {
+    title: "フローチャート",
+    generateFromConditions: "利用条件から生成",
+    generateFromCode: "コードから生成",
+    generatingFromCode: "OpenFiscaコードからフローチャートを生成しています...",
+    generatingFromConditions: "利用条件からフローチャートを生成しています...",
+    generatingMermaid: "Mermaidフローを生成中...",
+    generatingConditionsMermaid: "利用条件からフローチャートを生成中...",
+    currentConditions: "現在の利用条件",
+    notSet: "未設定",
+    emptyCode: "OpenFiscaコードが空です。",
+    emptyConditions: "利用条件が設定されていません。",
+    renderingFailed: "Mermaidダイアグラムのレンダリングに失敗しました。",
+    generationFailed: "Mermaid記法の生成に失敗しました。",
+    conditionsGenerationFailed: "利用条件からのMermaid記法の生成に失敗しました。"
+  },
   parameter: {
     title: "パラメータ",
     description: "制度の計算に使用される値（給付額など）を設定します。",
@@ -112,17 +145,6 @@ export const ja = {
   codeEditor: {
     title: "OpenFiscaコードエディタ",
     saveCode: "コードを保存",
-  },
-  flowchart: {
-    title: "フローチャート",
-    generateFromCode: "コードからフロー生成",
-    generateFromConditions: "利用条件からフロー生成",
-    generating: "生成中...",
-    codeTabDescription: "「コードからフロー生成」ボタンをクリックして、OpenFiscaコードからフローチャートを生成します。",
-    conditionsTabDescription:
-      "「利用条件からフロー生成」ボタンをクリックして、自然言語の利用条件からフローチャートを生成します。",
-    currentConditions: "現在の利用条件",
-    notSet: "未設定",
   },
   multiSelect: {
     itemsSelected: "件の制度を選択中",

@@ -162,7 +162,7 @@ export function Sidebar({
           variant="ghost"
           size="icon"
           asChild
-          title="ドキュメント"
+          title={t.common.documentation}
         >
           <Link href="/docs" target="_blank" rel="noopener noreferrer">
             <FileText className="h-4 w-4" />

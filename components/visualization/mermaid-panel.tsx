@@ -9,12 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Institution } from "@/lib/types"
 import { generateMermaidDiagram } from "@/lib/api"
 import { generateMermaidFromConditions } from "@/lib/ai-utils"
+import { useI18n } from "@/lib/i18n"
 
 interface MermaidPanelProps {
   institution: Institution
 }
 
 export function MermaidPanel({ institution }: MermaidPanelProps) {
+  const { t } = useI18n()
   const [mermaidCode, setMermaidCode] = useState<string | null>(null)
   const [conditionsMermaidCode, setConditionsMermaidCode] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -42,7 +44,7 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
 
   const handleGenerateMermaid = async () => {
     if (!institution.formulaCode) {
-      alert("OpenFiscaコードが空です。")
+      alert(t.flowchart.emptyCode)
       return
     }
 
@@ -54,7 +56,7 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
     } catch (error) {
       console.error("Failed to generate Mermaid diagram:", error)
       if (mermaidRef.current) {
-        mermaidRef.current.innerHTML = '<p class="text-destructive">Mermaid記法の生成に失敗しました。</p>'
+        mermaidRef.current.innerHTML = `<p class="text-destructive">${t.flowchart.generationFailed}</p>`
       }
     } finally {
       setLoading(false)
@@ -63,7 +65,7 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
 
   const handleGenerateConditionsMermaid = async () => {
     if (!institution.conditions || institution.conditions.trim() === "") {
-      alert("利用条件が設定されていません。")
+      alert(t.flowchart.emptyConditions)
       return
     }
 
@@ -76,7 +78,7 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
       console.error("Failed to generate conditions Mermaid diagram:", error)
       if (conditionsMermaidRef.current) {
         conditionsMermaidRef.current.innerHTML =
-          '<p class="text-destructive">利用条件からのMermaid記法の生成に失敗しました。</p>'
+          `<p class="text-destructive">${t.flowchart.conditionsGenerationFailed}</p>`
       }
     } finally {
       setConditionsLoading(false)
@@ -110,7 +112,7 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
     } catch (error) {
       console.error("Failed to render Mermaid diagram:", error)
       if (ref.current) {
-        ref.current.innerHTML = '<p class="text-destructive">Mermaidダイアグラムのレンダリングに失敗しました。</p>'
+        ref.current.innerHTML = `<p class="text-destructive">${t.flowchart.renderingFailed}</p>`
       }
     }
   }
@@ -129,7 +131,7 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
       <CardHeader className="flex flex-row items-center justify-between pb-3">
         <CardTitle className="flex items-center gap-2">
           <GitBranch className="h-5 w-5 text-foreground" />
-          フローチャート
+          {t.flowchart.title}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -137,11 +139,11 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
           <TabsList className="mb-4 w-full">
             <TabsTrigger value="conditions" className="flex items-center gap-1 flex-1">
               <FileText className="h-4 w-4" />
-              <span>利用条件から生成</span>
+              <span>{t.flowchart.generateFromConditions}</span>
             </TabsTrigger>
             <TabsTrigger value="code" className="flex items-center gap-1 flex-1">
               <Code className="h-4 w-4" />
-              <span>コードから生成</span>
+              <span>{t.flowchart.generateFromCode}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -150,13 +152,13 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
               {!mermaidCode && !loading && (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                   <GitBranch className="h-12 w-12 mb-2 opacity-20" />
-                  <p>OpenFiscaコードからフローチャートを生成しています...</p>
+                  <p>{t.flowchart.generatingFromCode}</p>
                 </div>
               )}
               {loading && (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                   <Loader2 className="h-8 w-8 animate-spin mb-2" />
-                  <p>Mermaidフローを生成中...</p>
+                  <p>{t.flowchart.generatingMermaid}</p>
                 </div>
               )}
             </div>
@@ -167,16 +169,16 @@ export function MermaidPanel({ institution }: MermaidPanelProps) {
               {!conditionsMermaidCode && !conditionsLoading && (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                   <FileText className="h-12 w-12 mb-2 opacity-20" />
-                  <p>利用条件からフローチャートを生成しています...</p>
+                  <p>{t.flowchart.generatingFromConditions}</p>
                   <p className="text-sm mt-2">
-                    現在の利用条件: {institution.conditions ? `「${institution.conditions}」` : "未設定"}
+                    {t.flowchart.currentConditions}: {institution.conditions ? `"${institution.conditions}"` : t.flowchart.notSet}
                   </p>
                 </div>
               )}
               {conditionsLoading && (
                 <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                   <Loader2 className="h-8 w-8 animate-spin mb-2" />
-                  <p>利用条件からフローチャートを生成中...</p>
+                  <p>{t.flowchart.generatingConditionsMermaid}</p>
                 </div>
               )}
             </div>
