@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Trash2, Plus, Minus } from "lucide-react"
 import type { TestCase } from "@/lib/types"
+import { useI18n } from "@/lib/i18n"
 
 /**
  * テストケースを編集するモーダルコンポーネント
@@ -27,6 +28,7 @@ export function TestCaseModal({
   testCase?: TestCase
   isEditing: boolean
 }) {
+  const { t } = useI18n()
   const [parent, setParent] = useState<number[]>([])
   const [grandparent, setGrandparent] = useState<number[]>([])
   const [child, setChild] = useState<number[]>([])
@@ -107,7 +109,7 @@ export function TestCaseModal({
           onClick={() => handleAddAge(category)}
         >
           <Plus className="h-4 w-4" />
-          追加
+          {t.common.add}
         </Button>
       </div>
       <div className="space-y-2">
@@ -121,7 +123,7 @@ export function TestCaseModal({
               className="w-24"
               min={0}
             />
-            <span className="text-sm text-muted-foreground">歳</span>
+            <span className="text-sm text-muted-foreground">{t.testCase.years}</span>
             <Button
               type="button"
               variant="ghost"
@@ -141,30 +143,30 @@ export function TestCaseModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "テストケースを編集" : "テストケースを追加"}</DialogTitle>
+          <DialogTitle>{isEditing ? t.testCase.editTestCase : t.testCase.addTestCase}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {renderAgeInputs("parent", parent, "親", "👩‍🦱")}
-          {renderAgeInputs("grandparent", grandparent, "祖父母", "👨‍🦳")}
-          {renderAgeInputs("child", child, "子供", "👶")}
+          {renderAgeInputs("parent", parent, t.testCase.parent, "👩‍🦱")}
+          {renderAgeInputs("grandparent", grandparent, t.testCase.grandparent, "👨‍🦳")}
+          {renderAgeInputs("child", child, t.testCase.child, "👶")}
 
           <div className="space-y-4">
-            <Label>給付金の受給</Label>
+            <Label>{t.testCase.benefitReceipt}</Label>
             <RadioGroup value={canReceive ? "yes" : "no"} onValueChange={(v) => setCanReceive(v === "yes")}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="yes" id="r1" />
-                <Label htmlFor="r1">受け取れる</Label>
+                <Label htmlFor="r1">{t.testCase.canReceive}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="no" id="r2" />
-                <Label htmlFor="r2">受け取れない</Label>
+                <Label htmlFor="r2">{t.testCase.cannotReceive}</Label>
               </div>
             </RadioGroup>
 
             {canReceive && (
               <div className="space-y-2">
-                <Label>給付金額</Label>
+                <Label>{t.testCase.amount}</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"
@@ -173,7 +175,7 @@ export function TestCaseModal({
                     className="w-32"
                     min={0}
                   />
-                  <span className="text-sm text-muted-foreground">円</span>
+                  <span className="text-sm text-muted-foreground">{t.testCase.yen}</span>
                 </div>
               </div>
             )}
@@ -184,14 +186,14 @@ export function TestCaseModal({
           {isEditing && (
             <Button variant="destructive" onClick={onDelete} className="gap-1">
               <Trash2 className="h-4 w-4" />
-              削除
+              {t.common.delete}
             </Button>
           )}
           <div className="flex gap-2 ml-auto">
             <Button variant="outline" onClick={onClose}>
-              キャンセル
+              {t.common.cancel}
             </Button>
-            <Button onClick={handleSave}>保存</Button>
+            <Button onClick={handleSave}>{t.common.save}</Button>
           </div>
         </div>
       </DialogContent>

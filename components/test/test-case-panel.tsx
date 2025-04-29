@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { TestCaseModal } from "@/components/test/test-case-modal"
 import { PlusCircle } from "lucide-react"
 import type { Institution, TestCase } from "@/lib/types"
+import { useI18n } from "@/lib/i18n"
 
 /**
  * テストケースを管理するパネルコンポーネント
@@ -21,6 +22,7 @@ export function TestCasePanel({
   institution: Institution
   onUpdate: (institution: Institution) => void
 }) {
+  const { t } = useI18n()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTestCaseIndex, setEditingTestCaseIndex] = useState<number | null>(null)
 
@@ -72,7 +74,7 @@ export function TestCasePanel({
    * テストケースの文字列表現を生成する
    */
   const generateTestCaseString = (testCase: TestCase) => {
-    const formatCat = (ages: number[], icon: string) => ages.map((age) => `${icon}${age}歳`).join(", ")
+    const formatCat = (ages: number[], icon: string) => ages.map((age) => `${icon}${age}${t.testCase.years}`).join(", ")
 
     const parts = []
     if (testCase.parent && testCase.parent.length > 0) {
@@ -92,39 +94,39 @@ export function TestCasePanel({
    * テストケースからYAMLを生成する
    */
   const generateYaml = (inst: Institution) => {
-    let yaml = `# ${inst.name}のテスト\n`
-    if (inst.url) yaml += `# 参照URL: ${inst.url}\n`
-    if (inst.summary) yaml += `# 概要: ${inst.summary}\n`
+    let yaml = `# ${inst.name} ${t.testCase.title}\n`
+    if (inst.url) yaml += `# ${t.institution.referenceUrl}: ${inst.url}\n`
+    if (inst.summary) yaml += `# ${t.institution.summary}: ${inst.summary}\n`
     yaml += `\n`
     ;(inst.testCases || []).forEach((tc, idx) => {
-      yaml += `- name: ケース${idx + 1}\n`
+      yaml += `- name: ${t.testCase.case} ${idx + 1}\n`
       yaml += `  period: 2023-01-01\n`
       yaml += `  input:\n`
-      yaml += `    世帯:\n`
+      yaml += `    ${t.testCase.household_yaml}:\n`
 
       if (tc.parent && tc.parent.length > 0) {
-        yaml += `      親一覧:\n`
+        yaml += `      ${t.testCase.parent_list}:\n`
         tc.parent.forEach((parent) => {
           yaml += `        - ${parent}\n`
         })
       }
 
       if (tc.grandparent && tc.grandparent.length > 0) {
-        yaml += `      祖父母一覧:\n`
+        yaml += `      ${t.testCase.grandparent_list}:\n`
         tc.grandparent.forEach((grandparent) => {
           yaml += `        - ${grandparent}\n`
         })
       }
 
       if (tc.child && tc.child.length > 0) {
-        yaml += `      子一覧:\n`
+        yaml += `      ${t.testCase.child_list}:\n`
         tc.child.forEach((child) => {
           yaml += `        - ${child}\n`
         })
       }
 
       yaml += `  output:\n`
-      yaml += `    世帯:\n`
+      yaml += `    ${t.testCase.household_yaml}:\n`
       yaml += `      ${inst.name}: ${tc.amount}\n\n`
     })
 
@@ -135,15 +137,15 @@ export function TestCasePanel({
     <>
       <Card className="shadow-sm hover:shadow transition-shadow duration-200">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>テストケース</CardTitle>
+          <CardTitle>{t.testCase.title}</CardTitle>
           <Button onClick={handleAddTestCase} variant="outline" className="gap-1">
             <PlusCircle className="h-4 w-4" />
-            テストケース追加
+            {t.testCase.add}
           </Button>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-4">
-            「この制度を利用できる人・できない人」を自由に追加してください。
+            {t.testCase.description}
           </p>
 
           <div className="flex flex-wrap gap-2">
@@ -156,7 +158,7 @@ export function TestCasePanel({
                 >
                   <span className="text-sm flex items-center gap-1">
                     <Badge variant={testCase.amount > 0 ? "default" : "destructive"} className="px-1.5 py-0">
-                      {testCase.amount > 0 ? `${Number(testCase.amount).toLocaleString()}円` : "対象外"}
+                      {testCase.amount > 0 ? `${Number(testCase.amount).toLocaleString()} ${t.testCase.yen}` : t.testCase.notEligible}
                     </Badge>
                     {generateTestCaseString(testCase)}
                   </span>
@@ -164,7 +166,7 @@ export function TestCasePanel({
               ))}
 
             {(!institution.testCases || institution.testCases.length === 0) && (
-              <p className="text-sm text-muted-foreground py-4">テストケースがありません。</p>
+              <p className="text-sm text-muted-foreground py-4">{t.testCase.noTestCases}</p>
             )}
           </div>
         </CardContent>
