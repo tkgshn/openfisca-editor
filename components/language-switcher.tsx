@@ -30,7 +30,7 @@ export function LanguageSwitcher() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="h-8 w-8 rounded-full">
           <Globe className="h-4 w-4" />
-          <span className="sr-only">言語切替</span>
+          <span className="sr-only">{t.settings.language}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

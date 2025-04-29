@@ -12,6 +12,8 @@ export const en = {
     confirm: "Confirm",
     yes: "Yes",
     no: "No",
+    demo: "Demo Version",
+    documentation: "Documentation",
   },
   sidebar: {
     title: "OpenFisca Editor",

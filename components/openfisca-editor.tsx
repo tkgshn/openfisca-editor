@@ -26,9 +26,10 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Loader2, Download, Trash2, X } from "lucide-react"
 import { TestProvider } from "@/contexts/test-context"
+import { useI18n } from "@/lib/i18n"
 
 export default function OpenFiscaEditor() {
-  // 既存のコードは省略...
+  const { t } = useI18n()
   const [institutions, setInstitutions] = useState<Institution[]>([])
   const [selectedInstitutionIndex, setSelectedInstitutionIndex] = useState<number | null>(null)
   const [selectedInstitution, setSelectedInstitution] = useState<Institution | null>(null)
@@ -137,7 +138,7 @@ export default function OpenFiscaEditor() {
             <div className="flex items-center justify-center h-full">
               <div className="flex flex-col items-center space-y-4 animate-fade-in">
                 <Loader2 className="h-8 w-8 text-primary animate-spin" />
-                <p className="text-lg">制度データを読み込み中...</p>
+                <p className="text-lg">{t.common.loading}</p>
               </div>
             </div>
           ) : isMultiSelectMode && selectedInstitutions.length > 0 ? (
@@ -145,7 +146,7 @@ export default function OpenFiscaEditor() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="flex justify-between items-center">
-                    <span>{selectedInstitutions.length}件の制度を選択中</span>
+                    <span>{selectedInstitutions.length}{t.multiSelect.itemsSelected}</span>
                     <Button variant="ghost" size="sm" onClick={handleToggleMultiSelectMode} className="h-8 w-8 p-0">
                       <X className="h-4 w-4" />
                     </Button>
@@ -174,7 +175,7 @@ export default function OpenFiscaEditor() {
                       disabled={selectedInstitutions.length === 0}
                     >
                       <Download className="h-4 w-4" />
-                      選択した制度をエクスポート
+                      {t.multiSelect.exportSelected}
                     </Button>
 
                     <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -185,29 +186,28 @@ export default function OpenFiscaEditor() {
                           disabled={selectedUserInstitutionsCount === 0}
                         >
                           <Trash2 className="h-4 w-4" />
-                          選択した制度を削除
+                          {t.multiSelect.deleteSelected}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>{selectedUserInstitutionsCount}件の制度を削除しますか？</AlertDialogTitle>
+                          <AlertDialogTitle>{selectedUserInstitutionsCount}{t.multiSelect.deleteConfirmation}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            この操作は元に戻せません。選択した制度とそのすべてのデータが完全に削除されます。
+                            {t.multiSelect.deleteDescription}
                             {selectedInstitutions.length > selectedUserInstitutionsCount && (
                               <p className="mt-2 text-amber-500">
-                                注意: サンプル制度は削除できないため、
-                                {selectedInstitutions.length - selectedUserInstitutionsCount}件の制度は削除されません。
+                                {t.multiSelect.sampleWarning.replace('institutions', (selectedInstitutions.length - selectedUserInstitutionsCount).toString())}
                               </p>
                             )}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>キャンセル</AlertDialogCancel>
+                          <AlertDialogCancel>{t.common.cancel}</AlertDialogCancel>
                           <AlertDialogAction
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             onClick={handleBulkDelete}
                           >
-                            削除
+                            {t.common.delete}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -239,7 +239,7 @@ export default function OpenFiscaEditor() {
           ) : (
             <div className="flex items-center justify-center h-full">
               <div className="text-center space-y-4 animate-fade-in">
-                <p className="text-lg">制度を選択するか、新しい制度を作成してください</p>
+                <p className="text-lg">{t.institution.selectOrCreate}</p>
                 <Button
                   onClick={() =>
                     handleAddInstitution({
@@ -280,7 +280,7 @@ class 新しい制度(Variable):
                     })
                   }
                 >
-                  新しい制度を作成
+                  {t.institution.newInstitution}
                 </Button>
               </div>
             </div>
