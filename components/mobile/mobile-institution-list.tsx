@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Plus, Check } from "lucide-react"
+import { Search, Plus, Check, Settings } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -18,11 +18,12 @@ interface MobileInstitutionListProps {
   onSelectInstitutions: (ids: string[]) => void
   isMultiSelectMode: boolean
   onToggleMultiSelectMode: () => void
+  onOpenSettings?: () => void
 }
 
 /**
  * Mobile-optimized institution list component
- * Provides a compact list view for institutions with search and selection functionality
+ * Provides a full-screen list view for institutions with search and selection functionality
  */
 export function MobileInstitutionList({
   institutions,
@@ -33,6 +34,7 @@ export function MobileInstitutionList({
   onSelectInstitutions,
   isMultiSelectMode,
   onToggleMultiSelectMode,
+  onOpenSettings,
 }: MobileInstitutionListProps) {
   const { t } = useI18n()
   const [searchQuery, setSearchQuery] = useState("")
@@ -55,7 +57,15 @@ export function MobileInstitutionList({
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b">
-        <h3 className="font-semibold text-lg mb-3">{t.sidebar.institutionList}</h3>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-lg">{t.sidebar.institutionList}</h3>
+          {onOpenSettings && (
+            <Button variant="ghost" size="sm" onClick={onOpenSettings} className="ml-auto">
+              <Settings className="h-4 w-4 mr-1" />
+              {t.common.settings}
+            </Button>
+          )}
+        </div>
         
         <div className="flex gap-2 mb-3">
           <div className="relative flex-1">
@@ -101,7 +111,7 @@ export function MobileInstitutionList({
               }`}
               onClick={() => (isMultiSelectMode ? handleToggleSelect(institution.id) : onSelect(index))}
             >
-              <div className="flex items-center gap-2 flex-1 truncate">
+              <div className="flex items-center gap-2 w-full pr-2">
                 {isMultiSelectMode && (
                   <Checkbox
                     checked={selectedInstitutions.includes(institution.id)}
@@ -109,14 +119,14 @@ export function MobileInstitutionList({
                     onClick={(e) => e.stopPropagation()}
                   />
                 )}
-                <div className="flex flex-col">
-                  <span className="font-medium truncate">{institution.name}</span>
+                <div className="flex-1 min-w-0">
+                  <span className="font-medium block truncate">{institution.name}</span>
                   {institution.summary && (
-                    <span className="text-xs text-muted-foreground truncate">{institution.summary}</span>
+                    <span className="text-xs text-muted-foreground block truncate">{institution.summary}</span>
                   )}
                 </div>
                 {institution.source === "sample" && (
-                  <Badge variant="outline" className="text-xs ml-auto">
+                  <Badge variant="outline" className="text-xs shrink-0">
                     {t.sidebar.sample}
                   </Badge>
                 )}

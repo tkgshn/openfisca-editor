@@ -1,15 +1,20 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Save, Link2, FileText, Users, ChevronDown, ChevronUp } from "lucide-react"
+import { Save, Link2, FileText, Users, Share2, Download, Copy, Globe } from "lucide-react"
 import type { Institution } from "@/lib/types"
 import { useI18n } from "@/lib/i18n"
+import { updateInstitution, exportToOpenFisca, publishInstitution, revertToVersion } from "@/lib/api"
+import { PublishPopover } from "@/components/institution/publish-popover"
+import { ShareConfirmationModal } from "@/components/institution/share-confirmation-modal"
+import { Badge } from "@/components/ui/badge"
+import JSZip from "jszip"
 
 interface MobileInstitutionDetailsProps {
   institution: Institution
@@ -37,6 +42,24 @@ export function MobileInstitutionDetails({
     postingUrl: institution.postingUrl || "",
     applicationUrl: institution.applicationUrl || "",
   })
+  const [isPublishPopoverOpen, setIsPublishPopoverOpen] = useState(false)
+  const [isShareConfirmationOpen, setIsShareConfirmationOpen] = useState(false)
+  const [selectedVisibility, setSelectedVisibility] = useState("private")
+  const publishButtonRef = useRef<HTMLButtonElement>(null)
+  const [publishButtonRect, setPublishButtonRect] = useState<DOMRect | null>(null)
+
+  useEffect(() => {
+    setFormData({
+      name: institution.name || "",
+      url: institution.url || "",
+      summary: institution.summary || "",
+      usage: institution.usage || "",
+      conditions: institution.conditions || "",
+      department: institution.department || "",
+      postingUrl: institution.postingUrl || "",
+      applicationUrl: institution.applicationUrl || "",
+    })
+  }, [institution])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target
@@ -78,7 +101,8 @@ ${t.institution.applicationUrl}: ${formData.applicationUrl}
         formulaCode: newHeader + restOfCode,
       }
 
-      await onUpdate(updatedInstitution)
+      await updateInstitution(updatedInstitution)
+      onUpdate(updatedInstitution)
       alert(t.institution.saveSuccess)
     } catch (error) {
       console.error("Failed to save institution:", error)
@@ -86,8 +110,132 @@ ${t.institution.applicationUrl}: ${formData.applicationUrl}
     }
   }
 
+  const handleExportInstitution = async () => {
+    try {
+      const files = await exportToOpenFisca(institution)
+
+      const zip = new JSZip()
+
+      zip.file(`${institution.name}.py`, files.variable)
+      zip.file(`${institution.name}_test.yaml`, files.test)
+
+      if (files.parameters.length > 0) {
+        files.parameters.forEach((paramContent, index) => {
+          const paramName = institution.parameters?.[index]?.name || `parameter_${index + 1}`
+          zip.file(`${paramName}.yaml`, paramContent)
+        })
+      }
+
+      const content = await zip.generateAsync({ type: "blob" })
+
+      const url = window.URL.createObjectURL(content)
+      const link = document.createElement("a")
+      link.href = url
+      link.download = `${institution.name}_openfisca.zip`
+      document.body.appendChild(link)
+      link.click()
+
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(link)
+
+      alert(t.institution.exportSuccess)
+    } catch (error) {
+      console.error("Failed to export institution:", error)
+      alert(t.institution.exportError)
+    }
+  }
+
+  const handlePublishButtonClick = () => {
+    if (publishButtonRef.current) {
+      setPublishButtonRect(publishButtonRef.current.getBoundingClientRect())
+    }
+    setIsPublishPopoverOpen(true)
+  }
+
+  const handlePublishInstitution = async (inst: Institution, visibility: string) => {
+    try {
+      await publishInstitution(inst, visibility)
+      const updatedInstitution = {
+        ...institution,
+        visibility: visibility,
+        publishedAt: new Date().toISOString(),
+      }
+      onUpdate(updatedInstitution)
+      setSelectedVisibility(visibility)
+      setIsPublishPopoverOpen(false)
+      setIsShareConfirmationOpen(true)
+      return Promise.resolve()
+    } catch (error) {
+      console.error("Failed to publish institution:", error)
+      return Promise.reject(error)
+    }
+  }
+
+  const handleCopyUrl = () => {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    const url = `${baseUrl}/institutions/${institution.id}`
+    navigator.clipboard
+      .writeText(url)
+      .then(() => alert(t.institution.copyUrlSuccess))
+      .catch(() => alert(t.institution.copyUrlError))
+  }
+
   return (
     <div className="space-y-4">
+      {/* Institution Header with Actions */}
+      <Card className="shadow-sm">
+        <CardContent className="p-4">
+          <div className="flex flex-col space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant={institution.visibility === "public" ? "default" : "outline"} className="text-xs">
+                  {institution.visibility === "public" ? t.common.public : t.common.private}
+                </Badge>
+                {institution.versions?.length > 0 && (
+                  <Badge variant="outline" className="text-xs">
+                    {institution.versions.length} {t.common.commits}
+                  </Badge>
+                )}
+              </div>
+            </div>
+            
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="flex items-center gap-1"
+                onClick={handlePublishButtonClick}
+                ref={publishButtonRef}
+              >
+                <Globe className="h-3.5 w-3.5" />
+                {t.common.publish}
+              </Button>
+              
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="flex items-center gap-1"
+                onClick={handleExportInstitution}
+              >
+                <Download className="h-3.5 w-3.5" />
+                {t.common.export}
+              </Button>
+              
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="flex items-center gap-1"
+                onClick={handleCopyUrl}
+              >
+                <Copy className="h-3.5 w-3.5" />
+                {t.common.copyUrl}
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Institution Details */}
       <Card className="shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between pb-3">
           <CardTitle className="text-lg">{t.institution.information}</CardTitle>
@@ -161,6 +309,20 @@ ${t.institution.applicationUrl}: ${formData.applicationUrl}
           </Tabs>
         </CardContent>
       </Card>
+
+      <PublishPopover
+        isOpen={isPublishPopoverOpen}
+        onClose={() => setIsPublishPopoverOpen(false)}
+        institution={institution}
+        onPublish={handlePublishInstitution}
+        anchorRect={publishButtonRect}
+      />
+      <ShareConfirmationModal
+        isOpen={isShareConfirmationOpen}
+        onClose={() => setIsShareConfirmationOpen(false)}
+        institution={institution}
+        visibility={selectedVisibility}
+      />
     </div>
   )
 }
