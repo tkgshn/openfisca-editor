@@ -1,6 +1,7 @@
 export const ja = {
   common: {
     settings: "設定",
+    documentation: "ドキュメント",
     save: "保存",
     cancel: "キャンセル",
     delete: "削除",
