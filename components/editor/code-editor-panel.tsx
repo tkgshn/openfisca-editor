@@ -10,6 +10,7 @@ import { ParameterCarousel } from "../parameter-carousel"
 import type { Institution } from "@/lib/types"
 import { updateInstitution } from "@/lib/api"
 import { useTheme } from "next-themes"
+import { useI18n } from "@/lib/i18n"
 import CodeMirror from "@uiw/react-codemirror"
 import { python } from "@codemirror/lang-python"
 import { vscodeDark } from "@uiw/codemirror-theme-vscode"
@@ -32,6 +33,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
   } | null>(null)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
+  const { t } = useI18n()
 
   useEffect(() => {
     setCode(institution.formulaCode || "")
@@ -96,7 +98,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
       <CardHeader className="flex flex-row items-center justify-between pb-3">
         <CardTitle className="flex items-center gap-2">
           <Code className="h-5 w-5 text-foreground" />
-          OpenFiscaコードエディタ
+          {t.codeEditor.title}
         </CardTitle>
         <div className="flex gap-2">
           <Button

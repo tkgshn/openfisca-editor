@@ -146,6 +146,14 @@ export const ja = {
     title: "OpenFiscaコードエディタ",
     saveCode: "コードを保存",
   },
+  simulation: {
+    title: "シミュレーション",
+    results: "シミュレーション結果",
+    run: "シミュレーション実行",
+    loading: "シミュレーションデータを読み込み中...",
+    rerun: "シミュレーション再実行",
+    addParameter: "新しいパラメータを追加"
+  },
   multiSelect: {
     itemsSelected: "件の制度を選択中",
     exportSelected: "選択した制度をエクスポート",
