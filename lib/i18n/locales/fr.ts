@@ -114,6 +114,19 @@ export const fr = {
   codeEditor: {
     title: "Éditeur de code OpenFisca",
     saveCode: "Enregistrer le code",
+    verify: "Vérifier",
+    save: "Enregistrer",
+    editor: "Éditeur",
+    help: "Aide",
+    codeSaved: "Le code a été enregistré",
+    saveError: "Échec de l'enregistrement du code",
+    codeValid: "Le code est valide",
+    syntaxError: "Il y a une erreur de syntaxe",
+    saveShortcut: "Enregistrer avec Ctrl+S ou Cmd+S",
+    about: "À propos du code OpenFisca",
+    description: "OpenFisca est un framework de simulation fiscale et sociale basé sur Python. Ici, vous décrivez la logique du système en code Python.",
+    basicStructure: "Structure de base",
+    commonFunctions: "Fonctions et opérateurs couramment utilisés"
   },
   simulation: {
     title: "Simulation",
@@ -121,7 +134,32 @@ export const fr = {
     run: "Exécuter la simulation",
     loading: "Chargement des données de simulation...",
     rerun: "Relancer la simulation",
-    addParameter: "Ajouter un nouveau paramètre"
+    addParameter: "Ajouter un nouveau paramètre",
+    parameterChange: "Modification des paramètres",
+    noParameters: "Aucun paramètre n'est défini. Veuillez ajouter des paramètres.",
+    incomeLimit: "Limite de revenu",
+    incomeDescription: "Les ménages dont le revenu dépasse un certain niveau ne sont pas éligibles au soutien.",
+    childAllowance: {
+      under3: "Prestations pour les enfants de 0 à 3 ans",
+      under3Description: "Montant de la prestation par enfant de moins de 3 ans",
+      age3to5: "Prestations pour les enfants de 3 à 5 ans",
+      age3to5Description: "Montant de la prestation par enfant de 3 à moins de 6 ans",
+      age6to10: "Prestations pour les enfants de 6 à 10 ans",
+      age6to10Description: "Montant de la prestation par enfant de 6 à moins de 11 ans"
+    },
+    stats: {
+      eligibleHouseholds: "Nombre de ménages éligibles",
+      ineligibleHouseholds: "Nombre de ménages non éligibles",
+      households: "Ménages",
+      eligibilityRate: "Taux d'éligibilité",
+      totalBenefit: "Montant total des prestations",
+      averageBenefit: "Montant moyen des prestations",
+      benefitAmount: "Montant des prestations (JPY)",
+      policyScope: "Portée de la politique",
+      childrenAverageAge: "Âge moyen des enfants",
+      numberOfChildren: "Nombre d'enfants",
+      householdIncome: "Revenu du ménage (JPY)"
+    }
   },
   flowchart: {
     title: "Organigramme",

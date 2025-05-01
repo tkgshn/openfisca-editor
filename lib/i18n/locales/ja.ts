@@ -145,6 +145,19 @@ export const ja = {
   codeEditor: {
     title: "OpenFiscaコードエディタ",
     saveCode: "コードを保存",
+    verify: "検証",
+    save: "保存",
+    editor: "エディタ",
+    help: "ヘルプ",
+    codeSaved: "コードが保存されました",
+    saveError: "コードの保存に失敗しました",
+    codeValid: "コードは有効です",
+    syntaxError: "構文エラーがあります",
+    saveShortcut: "Ctrl+SまたはCmd+Sで保存",
+    about: "OpenFiscaコードについて",
+    description: "OpenFiscaはPythonベースの税・社会保障シミュレーションフレームワークです。ここでは、システムのロジックをPythonコードで記述します。",
+    basicStructure: "基本構造",
+    commonFunctions: "よく使用される関数と演算子"
   },
   simulation: {
     title: "シミュレーション",
@@ -152,7 +165,32 @@ export const ja = {
     run: "シミュレーション実行",
     loading: "シミュレーションデータを読み込み中...",
     rerun: "シミュレーション再実行",
-    addParameter: "新しいパラメータを追加"
+    addParameter: "新しいパラメータを追加",
+    parameterChange: "パラメータ変更",
+    noParameters: "パラメータが設定されていません。パラメータを追加してください。",
+    incomeLimit: "収入制限",
+    incomeDescription: "一定収入以上の世帯は支援対象外です。",
+    childAllowance: {
+      under3: "0-3歳の子供への給付",
+      under3Description: "0歳から3歳未満の子供1人あたりの給付額",
+      age3to5: "3-5歳の子供への給付",
+      age3to5Description: "3歳から6歳未満の子供1人あたりの給付額",
+      age6to10: "6-10歳の子供への給付",
+      age6to10Description: "6歳から11歳未満の子供1人あたりの給付額"
+    },
+    stats: {
+      eligibleHouseholds: "対象世帯数",
+      ineligibleHouseholds: "対象外世帯数",
+      households: "世帯",
+      eligibilityRate: "対象率",
+      totalBenefit: "総給付額",
+      averageBenefit: "平均給付額",
+      benefitAmount: "給付額(円)",
+      policyScope: "制度の対象範囲",
+      childrenAverageAge: "子供の平均年齢",
+      numberOfChildren: "子供の人数",
+      householdIncome: "世帯収入(円)"
+    }
   },
   multiSelect: {
     itemsSelected: "件の制度を選択中",

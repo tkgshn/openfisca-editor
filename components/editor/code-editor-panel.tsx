@@ -51,7 +51,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
       onUpdate(updatedInstitution)
       setValidationResult({
         isValid: true,
-        message: "コードが保存されました",
+        message: t.codeEditor.codeSaved,
       })
       setTimeout(() => {
         setValidationResult(null)
@@ -60,7 +60,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
       console.error("Failed to save code:", error)
       setValidationResult({
         isValid: false,
-        message: "コードの保存に失敗しました",
+        message: t.codeEditor.saveError,
       })
     } finally {
       setIsLoading(false)
@@ -74,7 +74,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
       const isValid = !code.includes("syntax error")
       setValidationResult({
         isValid,
-        message: isValid ? "コードは有効です" : "構文エラーがあります",
+        message: isValid ? t.codeEditor.codeValid : t.codeEditor.syntaxError,
       })
       setIsLoading(false)
     }, 1000)
@@ -109,19 +109,19 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
             className="flex items-center gap-1"
           >
             {isLoading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Code className="h-4 w-4" />}
-            検証
+            {t.codeEditor.verify}
           </Button>
           <Button size="sm" onClick={handleSaveCode} disabled={isLoading} className="flex items-center gap-1">
             <Save className="h-4 w-4 mr-1" />
-            保存
+            {t.codeEditor.save}
           </Button>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <Tabs defaultValue="editor">
           <TabsList className="mb-2">
-            <TabsTrigger value="editor">エディタ</TabsTrigger>
-            <TabsTrigger value="help">ヘルプ</TabsTrigger>
+            <TabsTrigger value="editor">{t.codeEditor.editor}</TabsTrigger>
+            <TabsTrigger value="help">{t.codeEditor.help}</TabsTrigger>
           </TabsList>
           <TabsContent value="editor" className="space-y-4">
             {validationResult && (
@@ -170,7 +170,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
               />
             </div>
 
-            <div className="text-xs text-muted-foreground text-right">Ctrl+S または Cmd+S で保存</div>
+            <div className="text-xs text-muted-foreground text-right">{t.codeEditor.saveShortcut}</div>
 
             <Separator className="my-4" />
 
@@ -183,15 +183,15 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
             <div className="space-y-4 text-sm">
               <div className="flex gap-2">
                 <div>
-                  <h3 className="font-medium">OpenFiscaコードについて</h3>
+                  <h3 className="font-medium">{t.codeEditor.about}</h3>
                   <p className="text-muted-foreground mt-1">
-                    OpenFiscaはPythonベースの税・社会保障シミュレーションフレームワークです。ここでは制度のロジックをPythonコードで記述します。
+                    {t.codeEditor.description}
                   </p>
                 </div>
               </div>
 
               <div className="bg-muted p-3 rounded-md">
-                <h4 className="font-medium mb-2">基本的な構造</h4>
+                <h4 className="font-medium mb-2">{t.codeEditor.basicStructure}</h4>
                 <pre className="text-xs overflow-x-auto">
                   {`class 制度名(Variable):
     value_type = float  # 戻り値の型
@@ -216,7 +216,7 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
               </div>
 
               <div className="bg-muted p-3 rounded-md">
-                <h4 className="font-medium mb-2">よく使う関数と演算子</h4>
+                <h4 className="font-medium mb-2">{t.codeEditor.commonFunctions}</h4>
                 <ul className="list-disc list-inside space-y-1">
                   <li>
                     <code>person('変数名', period)</code> - 他の変数を参照
@@ -225,10 +225,10 @@ export function CodeEditorPanel({ institution, onUpdate }: CodeEditorPanelProps)
                     <code>parameters(period).カテゴリ.パラメータ名</code> - パラメータを参照
                   </li>
                   <li>
-                    <code>&</code> - 論理AND（NumPyベクトル演算）
+                    <code>{'&'}</code> - 論理AND（NumPyベクトル演算）
                   </li>
                   <li>
-                    <code>|</code> - 論理OR（NumPyベクトル演算）
+                    <code>{'|'}</code> - 論理OR（NumPyベクトル演算）
                   </li>
                   <li>
                     <code>where(条件, 真の場合の値, 偽の場合の値)</code> - 条件分岐

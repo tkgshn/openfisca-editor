@@ -112,6 +112,19 @@ export const en = {
   codeEditor: {
     title: "OpenFisca Code Editor",
     saveCode: "Save Code",
+    verify: "Verify",
+    save: "Save",
+    editor: "Editor",
+    help: "Help",
+    codeSaved: "Code has been saved",
+    saveError: "Failed to save code",
+    codeValid: "Code is valid",
+    syntaxError: "There is a syntax error",
+    saveShortcut: "Save with Ctrl+S or Cmd+S",
+    about: "About OpenFisca Code",
+    description: "OpenFisca is a Python-based tax and social security simulation framework. Here, you describe the logic of the system in Python code.",
+    basicStructure: "Basic Structure",
+    commonFunctions: "Commonly Used Functions and Operators"
   },
   simulation: {
     title: "Simulation",
@@ -119,7 +132,32 @@ export const en = {
     run: "Run Simulation",
     loading: "Loading simulation data...",
     rerun: "Re-run Simulation",
-    addParameter: "Add a new parameter"
+    addParameter: "Add a new parameter",
+    parameterChange: "Parameter Change",
+    noParameters: "No parameters are set. Please add parameters.",
+    incomeLimit: "Income Limit",
+    incomeDescription: "Households with income above a certain level are not eligible for support.",
+    childAllowance: {
+      under3: "Benefits for children aged 0-3",
+      under3Description: "Benefit amount per child under 3 years old",
+      age3to5: "Benefits for children aged 3-5",
+      age3to5Description: "Benefit amount per child from 3 to under 6 years old",
+      age6to10: "Benefits for children aged 6-10",
+      age6to10Description: "Benefit amount per child from 6 to under 11 years old"
+    },
+    stats: {
+      eligibleHouseholds: "Number of eligible households",
+      ineligibleHouseholds: "Number of ineligible households",
+      households: "Households",
+      eligibilityRate: "Eligibility rate",
+      totalBenefit: "Total benefit amount",
+      averageBenefit: "Average benefit amount",
+      benefitAmount: "Benefit amount (JPY)",
+      policyScope: "Policy Coverage",
+      childrenAverageAge: "Average age of children",
+      numberOfChildren: "Number of children",
+      householdIncome: "Household income (JPY)"
+    }
   },
   flowchart: {
     title: "Flowchart",

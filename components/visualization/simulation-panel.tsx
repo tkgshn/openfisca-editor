@@ -406,7 +406,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
         {
           type: "scatter3d",
           mode: "markers",
-          name: "対象世帯",
+          name: t.simulation.stats.eligibleHouseholds,
           x: eligible.map((h) => h.avgAge),
           y: eligible.map((h) => h.memberCount),
           z: eligible.map((h) => h.multiplesOf3Count),
@@ -414,13 +414,13 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
             size: 5,
             color: eligible.map((h) => h.benefit),
             colorscale: "YlOrRd",
-            colorbar: { title: "給付額(円)" },
+            colorbar: { title: t.simulation.stats.benefitAmount },
           },
         },
         {
           type: "scatter3d",
           mode: "markers",
-          name: "対象外世帯",
+          name: t.simulation.stats.ineligibleHouseholds,
           x: ineligible.map((h) => h.avgAge),
           y: ineligible.map((h) => h.memberCount),
           z: ineligible.map((h) => h.multiplesOf3Count),
@@ -507,7 +507,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
         {
           type: "scatter3d",
           mode: "markers",
-          name: "対象世帯",
+          name: t.simulation.stats.eligibleHouseholds,
           x: eligible.map((h) => h.avgChildAge),
           y: eligible.map((h) => h.childrenCount),
           z: eligible.map((h) => h.income),
@@ -515,13 +515,13 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
             size: 5,
             color: eligible.map((h) => h.benefit),
             colorscale: "YlOrRd",
-            colorbar: { title: "給付額(円)" },
+            colorbar: { title: t.simulation.stats.benefitAmount },
           },
         },
         {
           type: "scatter3d",
           mode: "markers",
-          name: "対象外世帯",
+          name: t.simulation.stats.ineligibleHouseholds,
           x: ineligible.map((h) => h.avgChildAge),
           y: ineligible.map((h) => h.childrenCount),
           z: ineligible.map((h) => h.income),
@@ -533,11 +533,11 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
         },
       ],
       layout: {
-        title: "制度の対象範囲",
+        title: t.simulation.stats.policyScope,
         scene: {
-          xaxis: { title: "子供の平均年齢" },
-          yaxis: { title: "子供の人数" },
-          zaxis: { title: "世帯収入(円)" },
+          xaxis: { title: t.simulation.stats.childrenAverageAge },
+          yaxis: { title: t.simulation.stats.numberOfChildren },
+          zaxis: { title: t.simulation.stats.householdIncome },
         },
       },
     }
@@ -584,14 +584,14 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* パラメータ設定部分 */}
           <div className="space-y-6">
-            <h3 className="text-lg font-medium">パラメータ変更</h3>
+            <h3 className="text-lg font-medium">{t.simulation.parameterChange}</h3>
 
             {isChildcareGrant ? (
               // 子育て助成金のパラメータ
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">収入制限</Label>
+                    <Label className="text-sm font-medium">{t.simulation.incomeLimit}</Label>
                     <span className="text-sm font-mono">{formatIncome(thresholdIncome)}</span>
                   </div>
                   <Slider
@@ -601,12 +601,12 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                     step={50000}
                     onValueChange={(value) => handleSliderChange("thresholdIncome", value)}
                   />
-                  <p className="text-xs text-muted-foreground">一定収入以上の世帯は支援対象外です。</p>
+                  <p className="text-xs text-muted-foreground">{t.simulation.incomeDescription}</p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">0-3歳の子供への給付</Label>
+                    <Label className="text-sm font-medium">{t.simulation.childAllowance.under3}</Label>
                     <span className="text-sm font-mono">{formatCurrency(amount0_3)}</span>
                   </div>
                   <Slider
@@ -616,12 +616,12 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                     step={1000}
                     onValueChange={(value) => handleSliderChange("amount0_3", value)}
                   />
-                  <p className="text-xs text-muted-foreground">0歳から3歳未満の子供1人あたりの給付額</p>
+                  <p className="text-xs text-muted-foreground">{t.simulation.childAllowance.under3Description}</p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">3-5歳の子供への給付</Label>
+                    <Label className="text-sm font-medium">{t.simulation.childAllowance.age3to5}</Label>
                     <span className="text-sm font-mono">{formatCurrency(amount3_5)}</span>
                   </div>
                   <Slider
@@ -631,12 +631,12 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                     step={1000}
                     onValueChange={(value) => handleSliderChange("amount3_5", value)}
                   />
-                  <p className="text-xs text-muted-foreground">3歳から6歳未満の子供1人あたりの給付額</p>
+                  <p className="text-xs text-muted-foreground">{t.simulation.childAllowance.age3to5Description}</p>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">6-10歳の子供への給付</Label>
+                    <Label className="text-sm font-medium">{t.simulation.childAllowance.age6to10}</Label>
                     <span className="text-sm font-mono">{formatCurrency(amount6_10)}</span>
                   </div>
                   <Slider
@@ -646,7 +646,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                     step={1000}
                     onValueChange={(value) => handleSliderChange("amount6_10", value)}
                   />
-                  <p className="text-xs text-muted-foreground">6歳から11歳未満の子供1人あたりの給付額</p>
+                  <p className="text-xs text-muted-foreground">{t.simulation.childAllowance.age6to10Description}</p>
                 </div>
 
                 <Button
@@ -664,7 +664,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                 </Button>
               </div>
             ) : institution.parameters && institution.parameters.length > 0 ? (
-              // 通常の制度のパラメータ
+              // Regular institution parameters
               <div className="space-y-4">
                 {institution.parameters.map((param: Parameter, index: number) => (
                   <div key={index} className="space-y-2">
@@ -693,7 +693,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
               </div>
             ) : (
               <div className="text-center py-4 text-muted-foreground">
-                <p>パラメータが設定されていません。パラメータを追加してください。</p>
+                <p>{t.simulation.noParameters}</p>
                 <Button
                   variant="outline"
                   onClick={handleAddParameter}
@@ -706,32 +706,32 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
             )}
           </div>
 
-          {/* シミュレーション結果部分 */}
+          {/* Simulation Results Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium mb-2">{t.simulation.results}</h3>
             {simulationData ? (
               <>
                 <div className="grid grid-cols-3 gap-2 mb-4">
                   <div className="bg-muted/50 p-3 rounded-md">
-                    <h4 className="text-sm font-medium">対象世帯数</h4>
+                    <h4 className="text-sm font-medium">{t.simulation.stats.eligibleHouseholds}</h4>
                     <div className="flex items-baseline gap-1 mt-1">
                       <span className="text-xl font-bold">{simulationData.stats.eligibleCount}</span>
                       <span className="text-xs text-muted-foreground">
-                        / {simulationData.stats.totalHouseholds}世帯
+                        / {simulationData.stats.totalHouseholds} {t.simulation.stats.households}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      対象率: {formatPercent(simulationData.stats.eligibilityRate)}
+                      {t.simulation.stats.eligibilityRate}: {formatPercent(simulationData.stats.eligibilityRate)}
                     </p>
                   </div>
 
                   <div className="bg-muted/50 p-3 rounded-md">
-                    <h4 className="text-sm font-medium">総給付額</h4>
+                    <h4 className="text-sm font-medium">{t.simulation.stats.totalBenefit}</h4>
                     <div className="text-xl font-bold mt-1">{formatCurrency(simulationData.stats.totalSupport)}</div>
                   </div>
 
                   <div className="bg-muted/50 p-3 rounded-md">
-                    <h4 className="text-sm font-medium">平均給付額</h4>
+                    <h4 className="text-sm font-medium">{t.simulation.stats.averageBenefit}</h4>
                     <div className="text-xl font-bold mt-1">
                       {formatCurrency(Math.round(simulationData.stats.avgSupport))}
                     </div>
