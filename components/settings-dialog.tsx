@@ -61,23 +61,21 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
   const [isClearDataDialogOpen, setIsClearDataDialogOpen] = useState(false)
   const [selectedDoc, setSelectedDoc] = useState<string | null>(null)
 
-  // ダミーデータ
   const userData = {
-    name: "ユーザー名",
+    name: t.userData.username,
     email: "user@example.com",
     accountType: "free",
     apiKey: "opf_" + Math.random().toString(36).substring(2, 15),
     lastSynced: null,
   }
 
-  // ドキュメント一覧
   const documents = [
-    { id: "user-guide", name: "ユーザーガイド", icon: <Book className="h-4 w-4" />, path: "/docs/user-guide" },
-    { id: "openfisca-concepts", name: "OpenFisca概念", icon: <Compass className="h-4 w-4" />, path: "/docs/openfisca-concepts" },
-    { id: "openfisca-file-guide", name: "ファイル作成ガイド", icon: <FileText className="h-4 w-4" />, path: "/docs/openfisca-file-guide" },
-    { id: "installation", name: "インストールガイド", icon: <Settings className="h-4 w-4" />, path: "/docs/installation" },
-    { id: "architecture", name: "アーキテクチャ", icon: <Layers className="h-4 w-4" />, path: "/docs/architecture" },
-    { id: "api-reference", name: "APIリファレンス", icon: <Code className="h-4 w-4" />, path: "/docs/api-reference" },
+    { id: "user-guide", name: t.documents.userGuide, icon: <Book className="h-4 w-4" />, path: "/docs/user-guide" },
+    { id: "openfisca-concepts", name: t.documents.openfiscaConcepts, icon: <Compass className="h-4 w-4" />, path: "/docs/openfisca-concepts" },
+    { id: "openfisca-file-guide", name: t.documents.fileGuide, icon: <FileText className="h-4 w-4" />, path: "/docs/openfisca-file-guide" },
+    { id: "installation", name: t.documents.installation, icon: <Settings className="h-4 w-4" />, path: "/docs/installation" },
+    { id: "architecture", name: t.documents.architecture, icon: <Layers className="h-4 w-4" />, path: "/docs/architecture" },
+    { id: "api-reference", name: t.documents.apiReference, icon: <Code className="h-4 w-4" />, path: "/docs/api-reference" },
   ]
 
   // ローカルストレージの使用量を計算
@@ -100,7 +98,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
           setLocalStorageUsage(`${total} B`)
         }
       } catch (e) {
-        setLocalStorageUsage("計算できません")
+        setLocalStorageUsage(t.settings.calculationError)
       }
     }
   }, [])
@@ -164,7 +162,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card>
               <CardHeader>
                 <CardTitle>{t.settings.language}</CardTitle>
-                <CardDescription>アプリケーションの表示言語を選択してください。</CardDescription>
+                <CardDescription>{t.settings.selectLanguage}</CardDescription>
               </CardHeader>
               <CardContent>
                 <RadioGroup value={locale} onValueChange={handleLanguageChange} className="space-y-4">
@@ -190,7 +188,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card>
               <CardHeader>
                 <CardTitle>{t.settings.profile}</CardTitle>
-                <CardDescription>アカウント情報を管理します。</CardDescription>
+                <CardDescription>{t.settings.manageAccountInfo}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -232,7 +230,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card>
               <CardHeader>
                 <CardTitle>{t.settings.apiSettings}</CardTitle>
-                <CardDescription>OpenFisca APIとの連携に使用するAPIキーを管理します。</CardDescription>
+                <CardDescription>{t.settings.apiSettingsDescription}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -256,7 +254,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card>
               <CardHeader>
                 <CardTitle>{t.settings.dataStorage}</CardTitle>
-                <CardDescription>データの保存方法と同期設定を管理します。</CardDescription>
+                <CardDescription>{t.settings.manageDataStorage}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
@@ -288,7 +286,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card>
               <CardHeader>
                 <CardTitle>{t.settings.exportImport}</CardTitle>
-                <CardDescription>データのエクスポートとインポートを行います。</CardDescription>
+                <CardDescription>{t.settings.manageExportImport}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-2">
@@ -319,7 +317,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card>
               <CardHeader>
                 <CardTitle>{t.settings.theme}</CardTitle>
-                <CardDescription>アプリケーションの表示テーマを選択してください。</CardDescription>
+                <CardDescription>{t.settings.selectTheme}</CardDescription>
               </CardHeader>
               <CardContent>
                 <RadioGroup value={theme || "system"} onValueChange={handleThemeChange} className="space-y-4">
@@ -355,7 +353,7 @@ export function SettingsDialog({ open, onOpenChange }: SettingsDialogProps) {
             <Card className="border-destructive/50">
               <CardHeader>
                 <CardTitle className="text-destructive">{t.settings.dangerZone}</CardTitle>
-                <CardDescription>これらの操作は元に戻せません。慎重に行ってください。</CardDescription>
+                <CardDescription>{t.settings.dangerZoneWarning}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">

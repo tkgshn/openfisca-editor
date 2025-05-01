@@ -191,5 +191,29 @@ export const ja = {
     clearAllDataDescription: "この操作は元に戻せません。すべてのユーザー作成データが完全に削除されます。",
     deleteAccount: "アカウントを削除",
     deleteAccountDescription: "この操作は元に戻せません。アカウントとすべてのデータが完全に削除されます。",
+    selectLanguage: "アプリケーションの表示言語を選択してください。",
+    selectTheme: "アプリケーションの表示テーマを選択してください。",
+    dangerZoneWarning: "これらの操作は元に戻せません。慎重に行ってください。",
+    manageAccountInfo: "アカウント情報を管理します。",
+    manageDataStorage: "データの保存方法と同期設定を管理します。",
+    manageExportImport: "データのエクスポートとインポートを行います。",
+    calculationError: "計算できません",
+    apiSettingsDescription: "OpenFisca APIとの連携に使用するAPIキーを管理します。",
+  },
+  documents: {
+    userGuide: "ユーザーガイド",
+    openfiscaConcepts: "OpenFisca概念",
+    fileGuide: "ファイル作成ガイド",
+    installation: "インストールガイド",
+    architecture: "アーキテクチャ",
+    apiReference: "APIリファレンス",
+  },
+  userData: {
+    username: "ユーザー名"
+  },
+  markdown: {
+    loadError: "ドキュメントの読み込みに失敗しました",
+    loadErrorWithStatus: "ドキュメントの読み込みに失敗しました ({0})",
+    error: "エラーが発生しました"
   },
 }

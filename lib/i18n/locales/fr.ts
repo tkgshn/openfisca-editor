@@ -202,5 +202,29 @@ export const fr = {
     deleteAccount: "Supprimer le compte",
     deleteAccountDescription:
       "Cette action ne peut pas être annulée. Votre compte et toutes les données seront définitivement supprimés.",
+    selectLanguage: "Veuillez sélectionner la langue d'affichage de l'application.",
+    selectTheme: "Veuillez sélectionner le thème d'affichage de l'application.",
+    dangerZoneWarning: "Ces opérations ne peuvent pas être annulées. Veuillez procéder avec prudence.",
+    manageAccountInfo: "Gérer les informations du compte.",
+    manageDataStorage: "Gérer la méthode de stockage des données et les paramètres de synchronisation.",
+    manageExportImport: "Effectuer l'exportation et l'importation de données.",
+    calculationError: "Impossible de calculer",
+    apiSettingsDescription: "Gérer les clés API utilisées pour l'intégration avec l'API OpenFisca.",
+  },
+  documents: {
+    userGuide: "Guide d'utilisation",
+    openfiscaConcepts: "Concepts OpenFisca",
+    fileGuide: "Guide de création de fichiers",
+    installation: "Guide d'installation",
+    architecture: "Architecture",
+    apiReference: "Référence API",
+  },
+  userData: {
+    username: "Nom d'utilisateur"
+  },
+  markdown: {
+    loadError: "Échec du chargement du document",
+    loadErrorWithStatus: "Échec du chargement du document ({0})",
+    error: "Une erreur s'est produite"
   },
 }
