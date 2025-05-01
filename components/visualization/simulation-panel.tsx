@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { PlayCircle, Plus, ChevronLeft, ChevronRight } from "lucide-react"
 import type { Institution, Parameter } from "@/lib/types"
+import { useI18n } from "@/lib/i18n"
 import dynamic from "next/dynamic"
 
 // Plotly.jsをクライアントサイドのみでロード
@@ -22,6 +23,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
   const [isRunning, setIsRunning] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [showNewParamForm, setShowNewParamForm] = useState(false)
+  const { t } = useI18n()
 
   // Check if this is a special childcare grant institution
   const isChildcareGrant = useMemo(() => {
@@ -575,7 +577,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="flex items-center gap-2">
           <PlayCircle className="h-5 w-5 text-foreground" />
-          シミュレーション
+          {t.simulation.title}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -658,7 +660,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                   }
                   className="w-full"
                 >
-                  シミュレーション再実行
+                  {t.simulation.rerun}
                 </Button>
               </div>
             ) : institution.parameters && institution.parameters.length > 0 ? (
@@ -686,7 +688,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                 ))}
 
                 <Button onClick={() => runSimulation()} className="w-full mt-4">
-                  シミュレーション再実行
+                  {t.simulation.rerun}
                 </Button>
               </div>
             ) : (
@@ -698,7 +700,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
                   className="mt-4"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  新しいパラメータを追加
+                  {t.simulation.addParameter}
                 </Button>
               </div>
             )}
@@ -706,7 +708,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
 
           {/* シミュレーション結果部分 */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium mb-2">シミュレーション結果</h3>
+            <h3 className="text-lg font-medium mb-2">{t.simulation.results}</h3>
             {simulationData ? (
               <>
                 <div className="grid grid-cols-3 gap-2 mb-4">
@@ -757,7 +759,7 @@ export function SimulationPanel({ institution }: SimulationPanelProps) {
               </>
             ) : (
               <div className="flex items-center justify-center h-48 bg-muted/30 rounded-md">
-                <p className="text-muted-foreground">シミュレーションデータを読み込み中...</p>
+                <p className="text-muted-foreground">{t.simulation.loading}</p>
               </div>
             )}
           </div>
