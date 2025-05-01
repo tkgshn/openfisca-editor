@@ -35,8 +35,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           </Link>
           <nav className="flex items-center gap-4">
             <Link href="/docs" className="text-sm hover:underline">
-              ドキュメント
+              {t.common.documentation}
             </Link>
+            <span className="bg-amber-200 text-amber-800 px-2 py-0.5 rounded-md text-xs font-medium">
+              {t.common.demo}
+            </span>
           </nav>
         </div>
         <div className="flex items-center gap-4">

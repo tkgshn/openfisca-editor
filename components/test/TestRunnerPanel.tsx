@@ -2,6 +2,7 @@ import type React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { useTest } from "@/contexts/test-context"
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react"
+import { useI18n } from "@/lib/i18n"
 
 interface TestRunnerPanelProps {
   institutionId: string
@@ -14,6 +15,7 @@ interface TestRunnerPanelProps {
  * @returns {JSX.Element} Test runner panel component
  */
 const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
+  const { t } = useI18n()
   const { results: testResults, isRunning: isLoading, error } = useTest()
   const testStatus = {
     total: testResults?.length || 0,
@@ -24,8 +26,8 @@ const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold">テスト結果</h3>
-        {isLoading && <div className="text-sm text-gray-500">テスト実行中...</div>}
+        <h3 className="text-xl font-semibold">{t.testCase.title}</h3>
+        {isLoading && <div className="text-sm text-gray-500">{t.testCase.running}</div>}
       </div>
 
       {error && (
@@ -42,11 +44,11 @@ const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
       {testResults.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="font-medium">結果:</span>
-            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-md text-sm">{testStatus.passed} 成功</span>
+            <span className="font-medium">{t.testCase.results}:</span>
+            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-md text-sm">{testStatus.passed} {t.testCase.success}</span>
             {testStatus.passed < testStatus.total && (
               <span className="px-2 py-1 bg-red-100 text-red-800 rounded-md text-sm">
-                {testStatus.total - testStatus.passed} 失敗
+                {testStatus.total - testStatus.passed} {t.testCase.failed}
               </span>
             )}
           </div>
@@ -68,11 +70,11 @@ const TestRunnerPanel: React.FC<TestRunnerPanelProps> = ({ institutionId }) => {
                     {result.error && <p className="text-red-600 mt-2">{result.error}</p>}
                     {!result.passed && !result.error && (
                       <div className="mt-2">
-                        <p className="text-sm text-gray-600">期待値:</p>
+                        <p className="text-sm text-gray-600">{t.testCase.expected}:</p>
                         <pre className="bg-white p-2 rounded mt-1 text-sm overflow-x-auto">
                           {JSON.stringify(result.expected, null, 2)}
                         </pre>
-                        <p className="text-sm text-gray-600 mt-2">実際の値:</p>
+                        <p className="text-sm text-gray-600 mt-2">{t.testCase.actual}:</p>
                         <pre className="bg-white p-2 rounded mt-1 text-sm overflow-x-auto">
                           {JSON.stringify(result.output, null, 2)}
                         </pre>

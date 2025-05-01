@@ -16,6 +16,7 @@ import { PublishPopover } from "@/components/institution/publish-popover"
 import { ShareConfirmationModal } from "@/components/institution/share-confirmation-modal"
 import { InstitutionHeader } from "@/components/institution/institution-header"
 import { useTest } from "@/contexts/test-context"
+import { useI18n } from "@/lib/i18n"
 
 // Import JSZip at the top of the file
 import JSZip from "jszip"
@@ -34,6 +35,7 @@ interface InstitutionDetailsProps {
  * @param onDelete - 制度が削除されたときに呼び出されるコールバック
  */
 export function InstitutionDetails({ institution, onUpdate, onDelete }: InstitutionDetailsProps) {
+  const { t } = useI18n()
   const [formData, setFormData] = useState({
     name: institution.name || "",
     url: institution.url || "",
@@ -109,7 +111,6 @@ export function InstitutionDetails({ institution, onUpdate, onDelete }: Institut
   const handleSave = async () => {
     try {
       // Extract header from existing code
-      // ※TypeScriptのターゲットがES2018未満の場合、/s フラグはサポートされていない
       const headerRegex = /^"""[\s\S]*?"""/
       let restOfCode = ""
       if (headerRegex.test(institution.formulaCode)) {
@@ -120,13 +121,13 @@ export function InstitutionDetails({ institution, onUpdate, onDelete }: Institut
 
       // Create new header
       const newHeader = `"""
-${formData.name} の実装
+${formData.name} ${t.institution.implementation || 'の実装'}
 
-概要: ${formData.summary}
-利用条件: ${formData.conditions}
-所管部署: ${formData.department}
-掲載URL: ${formData.postingUrl}
-申請先URL: ${formData.applicationUrl}
+${t.institution.summary}: ${formData.summary}
+${t.institution.conditions}: ${formData.conditions}
+${t.institution.department}: ${formData.department}
+${t.institution.postingUrl}: ${formData.postingUrl}
+${t.institution.applicationUrl}: ${formData.applicationUrl}
 """
 
 `
@@ -146,10 +147,10 @@ ${formData.name} の実装
 
       await updateInstitution(updatedInstitution)
       onUpdate(updatedInstitution)
-      alert("制度が保存されました。")
+      alert(t.institution.saveSuccess)
     } catch (error) {
       console.error("Failed to save institution:", error)
-      alert("制度の保存に失敗しました。")
+      alert(t.institution.saveError)
     }
   }
 
@@ -160,7 +161,7 @@ ${formData.name} の実装
       setIsDeleteDialogOpen(false)
     } catch (error) {
       console.error("Failed to delete institution:", error)
-      alert("制度の削除に失敗しました。")
+      alert(t.institution.deleteError)
     }
   }
 
@@ -197,10 +198,10 @@ ${formData.name} の実装
       window.URL.revokeObjectURL(url)
       document.body.removeChild(link)
 
-      alert("ファイルのエクスポートが完了しました。")
+      alert(t.institution.exportSuccess)
     } catch (error) {
       console.error("Failed to export institution:", error)
-      alert("ファイルのエクスポートに失敗しました。")
+      alert(t.institution.exportError)
     }
   }
 
@@ -249,18 +250,18 @@ ${formData.name} の実装
           const url = `${baseUrl}/institutions/${institution.id}`
           navigator.clipboard
             .writeText(url)
-            .then(() => alert("URLをコピーしました"))
-            .catch(() => alert("URLのコピーに失敗しました"))
+            .then(() => alert(t.institution.copyUrlSuccess))
+            .catch(() => alert(t.institution.copyUrlError))
         }}
         testResults={currentTestResults}
       />
 
       <Card className="shadow-sm hover:shadow transition-shadow duration-200">
         <CardHeader className="flex flex-row items-center justify-between pb-6">
-          <CardTitle>制度情報</CardTitle>
+          <CardTitle>{t.institution.information}</CardTitle>
           <Button onClick={handleSave} className="flex items-center gap-2">
             <Save className="h-4 w-4" />
-            保存
+            {t.common.save}
           </Button>
         </CardHeader>
         <CardContent>
@@ -268,61 +269,61 @@ ${formData.name} の実装
             <TabsList className="mb-4">
               <TabsTrigger value="basic" className="flex items-center gap-1">
                 <FileText className="h-4 w-4" />
-                <span>基本情報</span>
+                <span>{t.tabs.basicInfo}</span>
               </TabsTrigger>
               <TabsTrigger value="details" className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                <span>詳細情報</span>
+                <span>{t.tabs.detailInfo}</span>
               </TabsTrigger>
               <TabsTrigger value="links" className="flex items-center gap-1">
                 <Link2 className="h-4 w-4" />
-                <span>リンク</span>
+                <span>{t.tabs.links}</span>
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="basic" className="space-y-4 animate-slide-in">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">制度名</Label>
+                  <Label htmlFor="name">{t.institution.institutionName}</Label>
                   <Input id="name" value={formData.name} onChange={handleChange} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="department">所管部署</Label>
+                  <Label htmlFor="department">{t.institution.department}</Label>
                   <Input id="department" value={formData.department} onChange={handleChange} />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="summary">概要</Label>
+                <Label htmlFor="summary">{t.institution.summary}</Label>
                 <Textarea id="summary" rows={3} value={formData.summary} onChange={handleChange} />
               </div>
             </TabsContent>
 
             <TabsContent value="details" className="space-y-4 animate-slide-in">
               <div className="space-y-2">
-                <Label htmlFor="usage">利用方法</Label>
+                <Label htmlFor="usage">{t.institution.usageMethod}</Label>
                 <Textarea id="usage" rows={3} value={formData.usage} onChange={handleChange} />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="conditions">利用条件</Label>
+                <Label htmlFor="conditions">{t.institution.conditions}</Label>
                 <Textarea id="conditions" rows={3} value={formData.conditions} onChange={handleChange} />
               </div>
             </TabsContent>
 
             <TabsContent value="links" className="space-y-4 animate-slide-in">
               <div className="space-y-2">
-                <Label htmlFor="url">参照URL</Label>
+                <Label htmlFor="url">{t.institution.referenceUrl}</Label>
                 <Input id="url" value={formData.url} onChange={handleChange} />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="postingUrl">掲載URL</Label>
+                <Label htmlFor="postingUrl">{t.institution.postingUrl}</Label>
                 <Input id="postingUrl" value={formData.postingUrl} onChange={handleChange} />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="applicationUrl">申請先URL</Label>
+                <Label htmlFor="applicationUrl">{t.institution.applicationUrl}</Label>
                 <Input id="applicationUrl" value={formData.applicationUrl} onChange={handleChange} />
               </div>
             </TabsContent>
