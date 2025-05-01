@@ -1,5 +1,18 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TestCasePanel } from '@/components/test/test-case-panel'
+import { ja } from '@/lib/i18n/locales/ja'
+
+jest.mock('@/lib/i18n', () => {
+  const originalModule = jest.requireActual('@/lib/i18n');
+  return {
+    ...originalModule,
+    useI18n: () => ({
+      locale: 'ja',
+      t: ja,
+      changeLocale: jest.fn(),
+    }),
+  };
+});
 
 const mockInstitution = {
   id: 'test-id',
@@ -29,11 +42,11 @@ describe('TestCasePanel', () => {
       />
     )
     
-    expect(screen.getByText('テストケース')).toBeInTheDocument()
+    expect(screen.getByText(ja.testCase.title)).toBeInTheDocument()
     
-    expect(screen.getByText('テストケース追加')).toBeInTheDocument()
+    expect(screen.getByText(ja.testCase.add)).toBeInTheDocument()
     
-    expect(screen.getByText('15,000円')).toBeInTheDocument()
+    expect(screen.getByText(`15,000 ${ja.testCase.yen}`)).toBeInTheDocument()
   })
   
   it('opens modal when add button is clicked', () => {
@@ -44,7 +57,7 @@ describe('TestCasePanel', () => {
       />
     )
     
-    fireEvent.click(screen.getByText('テストケース追加'))
+    fireEvent.click(screen.getByText(ja.testCase.add))
     
   })
 })
