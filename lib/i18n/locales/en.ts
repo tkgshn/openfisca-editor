@@ -1,6 +1,7 @@
 export const en = {
   common: {
     settings: "Settings",
+    documentation: "Documentation",
     save: "Save",
     cancel: "Cancel",
     delete: "Delete",
