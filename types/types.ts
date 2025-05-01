@@ -32,8 +32,12 @@ export interface TestResult {
  * Simulation data point
  */
 export interface SimulationData {
-  time: number
-  value: number
+  time?: number
+  value?: number
+  x: number
+  y: number
+  z: number
+  color: number
 }
 
 /**
