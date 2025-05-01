@@ -392,12 +392,20 @@ class 新しい制度(Variable):
               setSelectedInstitutionIndex(null)
             }}
           >
-            <div className="p-4">
+            <div className="p-4 space-y-6 pb-20">
               <MobileInstitutionDetails
                 institution={selectedInstitution}
                 onUpdate={handleInstitutionUpdate}
                 onDelete={handleDeleteInstitution}
               />
+              
+              <TestCasePanel institution={selectedInstitution} onUpdate={handleInstitutionUpdate} />
+              
+              <MermaidPanel institution={selectedInstitution} />
+              
+              <CodeEditorPanel institution={selectedInstitution} onUpdate={handleInstitutionUpdate} />
+              
+              <SimulationPanel institution={selectedInstitution} />
             </div>
           </MobileAdminLayout>
         ) : (
