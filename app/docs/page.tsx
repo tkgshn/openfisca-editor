@@ -13,6 +13,7 @@ export default function DocsPage() {
     { id: "installation", name: "インストールガイド", icon: <Settings className="h-5 w-5" />, path: "/docs/installation", description: "インストール手順と設定方法" },
     { id: "architecture", name: "アーキテクチャ", icon: <Layers className="h-5 w-5" />, path: "/docs/architecture", description: "アプリケーションの構造と設計" },
     { id: "api-reference", name: "APIリファレンス", icon: <Code className="h-5 w-5" />, path: "/docs/api-reference", description: "API関数と型定義の詳細" },
+    { id: "component-reorganization", name: "コンポーネント整理計画", icon: <HelpCircle className="h-5 w-5" />, path: "/docs/component-reorganization", description: "コンポーネント構造の再編計画" },
   ]
 
   return (
