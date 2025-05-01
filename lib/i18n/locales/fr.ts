@@ -115,6 +115,14 @@ export const fr = {
     title: "Éditeur de code OpenFisca",
     saveCode: "Enregistrer le code",
   },
+  simulation: {
+    title: "Simulation",
+    results: "Résultats de simulation",
+    run: "Exécuter la simulation",
+    loading: "Chargement des données de simulation...",
+    rerun: "Relancer la simulation",
+    addParameter: "Ajouter un nouveau paramètre"
+  },
   flowchart: {
     title: "Organigramme",
     generateFromCode: "Générer un flux à partir du code",
