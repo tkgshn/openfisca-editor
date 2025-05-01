@@ -68,99 +68,101 @@ const SimulationPanel: React.FC<SimulationPanelProps> = ({ institutionId }) => {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6">
-        <h3 className="text-xl font-semibold mb-4">Simulation Parameters</h3>
+      <Card>
+        <CardContent className="p-6">
+          <h3 className="text-xl font-semibold mb-4">Simulation Parameters</h3>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="income-limit">収入制限</Label>
-                  <span>{(incomeLimit / 10000).toFixed(0)}万円</span>
-                </div>
-                <Slider
-                  id="income-limit"
-                  min={0}
-                  max={10000000}
-                  step={100000}
-                  value={[incomeLimit]}
-                  onValueChange={(value) => setIncomeLimit(value[0])}
-                />
-                <p className="text-sm text-muted-foreground">一定収入以上の世帯は支援対象外です。</p>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label htmlFor="income-limit">収入制限</Label>
+                <span>{(incomeLimit / 10000).toFixed(0)}万円</span>
               </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="child-benefit-03">0-3歳の子供への給付</Label>
-                  <span>{childBenefit03.toLocaleString()}円</span>
-                </div>
-                <Slider
-                  id="child-benefit-03"
-                  min={0}
-                  max={50000}
-                  step={1000}
-                  value={[childBenefit03]}
-                  onValueChange={(value) => setChildBenefit03(value[0])}
-                />
-                <p className="text-sm text-muted-foreground">0歳から3歳未満の子供1人あたりの給付額</p>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="child-benefit-35">3-5歳の子供への給付</Label>
-                  <span>{childBenefit35.toLocaleString()}円</span>
-                </div>
-                <Slider
-                  id="child-benefit-35"
-                  min={0}
-                  max={50000}
-                  step={1000}
-                  value={[childBenefit35]}
-                  onValueChange={(value) => setChildBenefit35(value[0])}
-                />
-                <p className="text-sm text-muted-foreground">3歳から6歳未満の子供1人あたりの給付額</p>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label htmlFor="child-benefit-610">6-10歳の子供への給付</Label>
-                  <span>{childBenefit610.toLocaleString()}円</span>
-                </div>
-                <Slider
-                  id="child-benefit-610"
-                  min={0}
-                  max={50000}
-                  step={1000}
-                  value={[childBenefit610]}
-                  onValueChange={(value) => setChildBenefit610(value[0])}
-                />
-                <p className="text-sm text-muted-foreground">6歳から11歳未満の子供1人あたりの給付額</p>
-              </div>
-
-              <Button onClick={handleRunSimulation} disabled={loading} className="w-full">
-                {loading ? "シミュレーション実行中..." : "シミュレーション再実行"}
-              </Button>
+              <Slider
+                id="income-limit"
+                min={0}
+                max={10000000}
+                step={100000}
+                value={[incomeLimit]}
+                onValueChange={(value) => setIncomeLimit(value[0])}
+              />
+              <p className="text-sm text-muted-foreground">一定収入以上の世帯は支援対象外です。</p>
             </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label htmlFor="child-benefit-03">0-3歳の子供への給付</Label>
+                <span>{childBenefit03.toLocaleString()}円</span>
+              </div>
+              <Slider
+                id="child-benefit-03"
+                min={0}
+                max={50000}
+                step={1000}
+                value={[childBenefit03]}
+                onValueChange={(value) => setChildBenefit03(value[0])}
+              />
+              <p className="text-sm text-muted-foreground">0歳から3歳未満の子供1人あたりの給付額</p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label htmlFor="child-benefit-35">3-5歳の子供への給付</Label>
+                <span>{childBenefit35.toLocaleString()}円</span>
+              </div>
+              <Slider
+                id="child-benefit-35"
+                min={0}
+                max={50000}
+                step={1000}
+                value={[childBenefit35]}
+                onValueChange={(value) => setChildBenefit35(value[0])}
+              />
+              <p className="text-sm text-muted-foreground">3歳から6歳未満の子供1人あたりの給付額</p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label htmlFor="child-benefit-610">6-10歳の子供への給付</Label>
+                <span>{childBenefit610.toLocaleString()}円</span>
+              </div>
+              <Slider
+                id="child-benefit-610"
+                min={0}
+                max={50000}
+                step={1000}
+                value={[childBenefit610]}
+                onValueChange={(value) => setChildBenefit610(value[0])}
+              />
+              <p className="text-sm text-muted-foreground">6歳から11歳未満の子供1人あたりの給付額</p>
+            </div>
+
+            <Button onClick={handleRunSimulation} disabled={loading} className="w-full">
+              {loading ? "シミュレーション実行中..." : "シミュレーション再実行"}
+            </Button>
           </div>
+        </CardContent>
+      </Card>
 
-          {/* シミュレーション結果部分 */}
-          {error && (
-            <Card className="p-6 bg-red-50 border-red-200">
-              <p className="text-red-600">{error}</p>
-            </Card>
-          )}
+      {/* シミュレーション結果部分 */}
+      {error && (
+        <Card className="bg-red-50 border-red-200">
+          <CardContent className="p-6">
+            <p className="text-red-600">{error}</p>
+          </CardContent>
+        </Card>
+      )}
 
-          {results && (
-            <SimulationResults
-              totalHouseholds={results.totalHouseholds}
-              targetHouseholds={results.targetHouseholds}
-              totalAmount={results.totalAmount}
-              averageAmount={results.averageAmount}
-              visualizationData={results.visualizationData}
-            />
-          )}
-        </div>
-      </CardContent>
-    </Card>
+      {results && (
+        <SimulationResults
+          totalHouseholds={results.totalHouseholds}
+          targetHouseholds={results.targetHouseholds}
+          totalAmount={results.totalAmount}
+          averageAmount={results.averageAmount}
+          visualizationData={results.visualizationData}
+        />
+      )}
+    </div>
   )
 }
 
