@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AIProvider } from "@/components/ai-provider"
 import { I18nProvider } from "@/lib/i18n"
+import { ClientLanguageUpdater } from "@/components/client-language-updater"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,20 +32,4 @@ export default function RootLayout({
       </body>
     </html>
   )
-}
-
-"use client"
-import { useI18n } from "@/lib/i18n"
-import { useEffect } from "react"
-
-function ClientLanguageUpdater() {
-  const { locale } = useI18n()
-  
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.lang = locale
-    }
-  }, [locale])
-  
-  return null
 }
