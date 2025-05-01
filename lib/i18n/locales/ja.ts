@@ -14,6 +14,11 @@ export const ja = {
     yes: "はい",
     no: "いいえ",
     demo: "デモ版",
+    public: "公開",
+    private: "非公開",
+    commits: "コミット",
+    publish: "公開する",
+    copyUrl: "URLをコピー",
   },
   sidebar: {
     title: "OpenFisca Editor",

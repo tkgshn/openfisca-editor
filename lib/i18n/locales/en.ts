@@ -14,6 +14,11 @@ export const en = {
     yes: "Yes",
     no: "No",
     demo: "Demo Version",
+    public: "Public",
+    private: "Private",
+    commits: "Commits",
+    publish: "Publish",
+    copyUrl: "Copy URL",
   },
   sidebar: {
     title: "OpenFisca Editor",
