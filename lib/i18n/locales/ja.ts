@@ -50,6 +50,11 @@ export const ja = {
     copyUrlError: "URLのコピーに失敗しました",
     information: "制度情報",
     implementation: "の実装",
+    noInstitutions: "制度がありません",
+    viewDetails: "詳細を表示",
+    variables: "変数",
+    parameters: "パラメータ",
+    tests: "テスト",
   },
   tabs: {
     basicInfo: "基本情報",

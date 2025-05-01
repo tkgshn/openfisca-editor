@@ -51,6 +51,11 @@ export const fr = {
     copyUrlError: "Échec de la copie de l'URL",
     information: "Informations sur l'institution",
     implementation: "Implémentation",
+    noInstitutions: "Aucune institution",
+    viewDetails: "Voir les détails",
+    variables: "Variables",
+    parameters: "Paramètres",
+    tests: "Tests",
   },
   tabs: {
     basicInfo: "Informations de base",

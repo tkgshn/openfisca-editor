@@ -50,6 +50,11 @@ export const en = {
     copyUrlError: "Failed to copy URL",
     information: "Institution Information",
     implementation: "Implementation",
+    noInstitutions: "No institutions",
+    viewDetails: "View Details",
+    variables: "Variables",
+    parameters: "Parameters",
+    tests: "Tests",
   },
   tabs: {
     basicInfo: "Basic Info",
