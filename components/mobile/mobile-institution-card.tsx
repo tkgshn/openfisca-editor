@@ -29,15 +29,15 @@ export function MobileInstitutionCard({ institution, onSelect }: MobileInstituti
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div>
             <span className="font-medium">{t.institution.variables}:</span>{" "}
-            {institution.stats?.variables || 0}
+            {institution.parameters?.length || 0}
           </div>
           <div>
             <span className="font-medium">{t.institution.parameters}:</span>{" "}
-            {institution.stats?.parameters || 0}
+            {institution.parameters?.length || 0}
           </div>
           <div>
             <span className="font-medium">{t.institution.tests}:</span>{" "}
-            {institution.stats?.tests || 0}
+            {institution.testCases?.length || 0}
           </div>
           <div>
             <span className="font-medium">{t.institution.department}:</span>{" "}
