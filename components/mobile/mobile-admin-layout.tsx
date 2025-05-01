@@ -10,6 +10,7 @@ interface MobileAdminLayoutProps {
   title: string
   showBackButton?: boolean
   onBack?: () => void
+  sidebar?: React.ReactNode
 }
 
 /**
