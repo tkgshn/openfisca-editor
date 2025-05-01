@@ -1,6 +1,7 @@
 export const fr = {
   common: {
     settings: "Paramètres",
+    documentation: "Documentation",
     save: "Enregistrer",
     cancel: "Annuler",
     delete: "Supprimer",

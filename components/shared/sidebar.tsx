@@ -158,16 +158,19 @@ export function Sidebar({
           <Settings className="h-4 w-4 mr-2" />
           {t.common.settings}
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          asChild
-          title={t.common.documentation}
-        >
-          <Link href="/docs" target="_blank" rel="noopener noreferrer">
-            <FileText className="h-4 w-4" />
-          </Link>
-        </Button>
+<Button
+  variant="outline"
+  className="w-full justify-start mt-2"
+  size="sm"
+  asChild
+  title={t.common.documentation}
+>
+  <Link href="/docs" target="_blank" rel="noopener noreferrer">
+    <FileText className="h-4 w-4 mr-2" />
+    {t.common.documentation}
+  </Link>
+</Button>
+
       </div>
 
       <SettingsDialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />

@@ -23,6 +23,8 @@ OpenFisca Editor は、社会保障制度のシミュレーションと可視化
 - [アーキテクチャ](/public/docs/architecture.md) - アプリケーションの構造
 - [コンポーネント整理計画](/public/docs/component-reorganization.md) - コンポーネント整理の方針
 
+アプリケーション内のドキュメントは[こちら](https://openfisca-editor.vercel.app/docs)からアクセスできます。
+
 ## 技術スタック
 
 - **フロントエンド**: Next.js（React）、TypeScript
