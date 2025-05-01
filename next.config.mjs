@@ -11,7 +11,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // TypeScriptエラーを無視せず、正しく処理する
+    ignoreBuildErrors: false,
   },
   images: {
     unoptimized: true,
