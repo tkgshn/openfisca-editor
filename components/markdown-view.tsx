@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Loader2 } from "lucide-react"
+import { useI18n } from "@/lib/i18n"
 import ReactMarkdown from "react-markdown"
 import rehypeHighlight from "rehype-highlight"
 import rehypeSlug from "rehype-slug"
@@ -32,6 +33,7 @@ interface MarkdownFileViewProps {
 }
 
 export function MarkdownFileView({ filePath }: MarkdownFileViewProps) {
+  const { t } = useI18n()
   const [content, setContent] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -42,14 +44,14 @@ export function MarkdownFileView({ filePath }: MarkdownFileViewProps) {
         const response = await fetch(filePath)
 
         if (!response.ok) {
-          throw new Error(`ドキュメントの読み込みに失敗しました (${response.status})`)
+          throw new Error(t.markdown.loadErrorWithStatus.replace("{0}", response.status.toString()))
         }
 
         const text = await response.text()
         setContent(text)
       } catch (err) {
         console.error("Markdown fetch error:", err)
-        setError(err instanceof Error ? err.message : "ドキュメントの読み込みに失敗しました")
+        setError(err instanceof Error ? err.message : t.markdown.loadError)
       } finally {
         setIsLoading(false)
       }
@@ -69,7 +71,7 @@ export function MarkdownFileView({ filePath }: MarkdownFileViewProps) {
   if (error) {
     return (
       <div className="bg-destructive/10 text-destructive p-4 rounded-md">
-        <h2 className="text-lg font-semibold mb-2">エラーが発生しました</h2>
+        <h2 className="text-lg font-semibold mb-2">{t.markdown.error}</h2>
         <p>{error}</p>
       </div>
     )

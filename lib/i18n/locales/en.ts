@@ -144,5 +144,29 @@ export const en = {
     clearAllDataDescription: "This action cannot be undone. All user-created data will be permanently deleted.",
     deleteAccount: "Delete Account",
     deleteAccountDescription: "This action cannot be undone. Your account and all data will be permanently deleted.",
+    selectLanguage: "Please select the display language of the application.",
+    selectTheme: "Please select the display theme of the application.",
+    dangerZoneWarning: "These operations cannot be undone. Please proceed with caution.",
+    manageAccountInfo: "Manage account information.",
+    manageDataStorage: "Manage data storage method and synchronization settings.",
+    manageExportImport: "Perform data export and import.",
+    calculationError: "Unable to calculate",
+    apiSettingsDescription: "Manage API keys used for integration with OpenFisca API.",
+  },
+  documents: {
+    userGuide: "User Guide",
+    openfiscaConcepts: "OpenFisca Concepts",
+    fileGuide: "File Creation Guide",
+    installation: "Installation Guide",
+    architecture: "Architecture",
+    apiReference: "API Reference",
+  },
+  userData: {
+    username: "Username"
+  },
+  markdown: {
+    loadError: "Failed to load document",
+    loadErrorWithStatus: "Failed to load document ({0})",
+    error: "An error occurred"
   },
 }
