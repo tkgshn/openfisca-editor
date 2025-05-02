@@ -14,6 +14,11 @@ export const fr = {
     yes: "Oui",
     no: "Non",
     demo: "Version Démo",
+    public: "Public",
+    private: "Privé",
+    commits: "Commits",
+    publish: "Publier",
+    copyUrl: "Copier l'URL",
   },
   sidebar: {
     title: "Éditeur OpenFisca",
@@ -51,6 +56,11 @@ export const fr = {
     copyUrlError: "Échec de la copie de l'URL",
     information: "Informations sur l'institution",
     implementation: "Implémentation",
+    noInstitutions: "Aucune institution",
+    viewDetails: "Voir les détails",
+    variables: "Variables",
+    parameters: "Paramètres",
+    tests: "Tests",
   },
   tabs: {
     basicInfo: "Informations de base",

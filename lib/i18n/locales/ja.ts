@@ -14,6 +14,11 @@ export const ja = {
     yes: "はい",
     no: "いいえ",
     demo: "デモ版",
+    public: "公開",
+    private: "非公開",
+    commits: "コミット",
+    publish: "公開する",
+    copyUrl: "URLをコピー",
   },
   sidebar: {
     title: "OpenFisca Editor",
@@ -50,6 +55,11 @@ export const ja = {
     copyUrlError: "URLのコピーに失敗しました",
     information: "制度情報",
     implementation: "の実装",
+    noInstitutions: "制度がありません",
+    viewDetails: "詳細を表示",
+    variables: "変数",
+    parameters: "パラメータ",
+    tests: "テスト",
   },
   tabs: {
     basicInfo: "基本情報",
